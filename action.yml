@@ -1,0 +1,15 @@
+name: "PR Title Checker"
+description: "Checks if the PR Title follows contribution guidelines."
+branding:
+  icon: 'tag'  
+  color: 'purple'
+on: [pull_request]
+inputs:
+  GITHUB_TOKEN:
+    required: true
+  configuration-path:
+    description: "The path for the label configurations"
+    default: ".github/pr-title-styles.json"
+runs:
+  using: "node12"
+  main: "dist/index.js"
