@@ -1,12 +1,13 @@
 # Pull Request Title Checker
 
+<!-- prettier-ignore -->
 This action checks if PR titles conform to the Contribution Guidelines :ballot_box_with_check: <br/><br/>
 Consistent title names help maintainers organise their projects better :books: <br/><br/>
 Shows if the author has _reaaaaally_ read the Contribution Guidelines :wink:
 
 ## Usage
 
-Create a `.github/pr-title-styles.json` like this one below:
+Create a config file `.github/pr-title-checker-config.json` like this one below:
 
 ```json
 {
@@ -24,6 +25,8 @@ Create a `.github/pr-title-styles.json` like this one below:
 If none of the checks pass, a label will be added to that pull request. \
 If at least one of them passes, the label will be removed.
 
+This action causes CI tests to fail by default. However, if you don't want CI tests failing just because of this action, simply set `alwaysPassCI` as true in the CHECKS field.
+
 ## Create Workflow
 
 Create a workflow (eg: `.github/workflows/pr-title-cheker.yml` see [Creating a Workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file)) to utilize the pr-title-checker action with content:
@@ -38,7 +41,7 @@ on:
       - synchronize
 
 jobs:
-  publish:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: thehanimo/pr-title-checker@v1.0.0

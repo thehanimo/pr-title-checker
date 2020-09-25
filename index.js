@@ -45,13 +45,13 @@ async function run() {
       }
     }
 
-    addLabel(LABEL.name);
+    addLabel(LABEL.name, CHECKS.alwaysPassCI);
   } catch (error) {
     core.info(error);
   }
 }
 
-async function addLabel(name) {
+async function addLabel(name, alwaysPassCI) {
   try {
     let addLabelResponse = await octokit.issues.addLabels({
       owner,
@@ -60,6 +60,7 @@ async function addLabel(name) {
       labels: [name],
     });
     core.info(`Adding label (${name}) - ` + addLabelResponse.status);
+    if (!alwaysPassCI) core.setFailed("Failing CI test");
   } catch (error) {
     core.info("All OK");
   }
