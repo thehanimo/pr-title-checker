@@ -4,10 +4,7 @@
   "description": "JavaScript Action Template",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint .",
-    "prepare": "ncc build index.js -o dist --source-map",
-    "test": "jest",
-    "all": "npm run lint && npm run prepare && npm run test"
+    "prepare": "ncc build index.js -o dist --source-map"
   },
   "repository": {
     "type": "git",
@@ -30,8 +27,6 @@
     "@octokit/action": "^3.0.5"
   },
   "devDependencies": {
-    "@zeit/ncc": "^0.22.3",
-    "eslint": "^7.4.0",
-    "jest": "^26.1.0"
+    "@zeit/ncc": "^0.22.3"
   }
 }
