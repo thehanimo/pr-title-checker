@@ -3,7 +3,7 @@
 <!-- prettier-ignore -->
 This action checks if PR titles conform to the Contribution Guidelines :ballot_box_with_check: <br/><br/>
 Consistent title names help maintainers organise their projects better :books: <br/><br/>
-Shows if the author has _reaaaaally_ read the Contribution Guidelines :wink:
+Shows if the author has _reaaaaally_ read the Contribution Guidelines :P
 
 ## Usage
 
@@ -17,7 +17,8 @@ Create a config file `.github/pr-title-checker-config.json` like this one below:
   },
   "CHECKS": {
     "prefixes": ["fix: ", "feat: "],
-    "regexp": "docs\\(v[0-9]\\): "
+    "regexp": "docs\\(v[0-9]\\): ",
+    "ignoreLabels" : ["dont-check-PRs-with-this-label", "meta"]
   }
 }
 ```
@@ -26,6 +27,8 @@ If none of the checks pass, a label will be added to that pull request. \
 If at least one of them passes, the label will be removed.
 
 This action causes CI tests to fail by default. However, if you don't want CI tests failing just because of this action, simply set `alwaysPassCI` as true in the CHECKS field.
+
+Also, adding label names to the optional `ignoreLabels` field will forfeit any checks for PRs with those labels.
 
 ## Create Workflow
 
@@ -39,6 +42,8 @@ on:
       - opened
       - edited
       - synchronize
+      - labeled
+      - unlabeled
 
 jobs:
   check:
