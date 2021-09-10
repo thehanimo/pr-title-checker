@@ -13,19 +13,17 @@ async function run() {
     const title = github.context.payload.pull_request.title;
     const labels = github.context.payload.pull_request.labels;
 
-    
-
     let a = await getJSON(configPath);
     let { CHECKS, LABEL } = JSON.parse(a);
     LABEL.name = LABEL.name || "title needs formatting";
     LABEL.color = LABEL.color || "eee";
-    CHECKS.ignoreLabels = CHECKS.ignoreLabels || []
+    CHECKS.ignoreLabels = CHECKS.ignoreLabels || [];
 
     for (let i = 0; i < labels.length; i++) {
       for (let j = 0; j < CHECKS.ignoreLabels.length; j++) {
-        if (labels[i].name == CHECKS.ignoreLabels[j]){
+        if (labels[i].name == CHECKS.ignoreLabels[j]) {
           core.info("Ignoring Title Check for label - " + labels[i].name);
-          return
+          return;
         }
       }
     }
