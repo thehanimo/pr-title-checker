@@ -6,7 +6,10 @@ branding:
 on: [pull_request]
 inputs:
   GITHUB_TOKEN:
-    required: true
+    required: false
+  pass_on_octokit_error:
+    description: "force CI to pass if an octokit error (e.g. missing GITHUB_TOKEN) occurs"
+    default: false
   configuration-path:
     description: "config file path"
     default: ".github/pr-title-checker-config.json"
