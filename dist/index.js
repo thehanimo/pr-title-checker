@@ -739,7 +739,13 @@ async function run() {
     const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title;
     const labels = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.labels;
 
-    let a = await getJSON(configPath);
+    let a;
+    try {
+      a = await getJSON(configPath);
+    } catch (e) {
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("Couldn't retrieve the config file specified - " + e);
+      return;
+    }
     let { CHECKS, LABEL } = JSON.parse(a);
     LABEL.name = LABEL.name || "title needs formatting";
     LABEL.color = LABEL.color || "eee";

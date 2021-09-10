@@ -14,7 +14,13 @@ async function run() {
     const title = github.context.payload.pull_request.title;
     const labels = github.context.payload.pull_request.labels;
 
-    let a = await getJSON(configPath);
+    let a;
+    try {
+      a = await getJSON(configPath);
+    } catch (e) {
+      core.setFailed("Couldn't retrieve the config file specified - " + e);
+      return;
+    }
     let { CHECKS, LABEL } = JSON.parse(a);
     LABEL.name = LABEL.name || "title needs formatting";
     LABEL.color = LABEL.color || "eee";
