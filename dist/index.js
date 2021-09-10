@@ -728,9 +728,10 @@ __webpack_require__.r(__webpack_exports__);
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
 const issue_number = process.env.GITHUB_REF.split("/")[2];
 const configPath = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("configuration-path");
+const passOnOctokitError = process.env.INPUT_PASS_ON_OCTOKIT_ERROR === "true";
 const { Octokit } = __webpack_require__(725);
 
-const octokit = new Octokit();
+let octokit;
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -829,7 +830,24 @@ async function getJSON(repoPath) {
   return Buffer.from(response.data.content, response.data.encoding).toString();
 }
 
-run();
+async function handleOctokitError(e) {
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Octokit Error - " + e);
+  if (passOnOctokitError) {
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Passing CI regardless");
+  } else {
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("Failing CI test");
+  }
+}
+
+try {
+  octokit = new Octokit();
+} catch (e) {
+  handleOctokitError(e);
+}
+
+if (octokit) {
+  run();
+}
 
 
 /***/ }),

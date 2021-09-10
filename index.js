@@ -3,9 +3,10 @@ import * as github from "@actions/github";
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
 const issue_number = process.env.GITHUB_REF.split("/")[2];
 const configPath = core.getInput("configuration-path");
+const passOnOctokitError = process.env.INPUT_PASS_ON_OCTOKIT_ERROR === "true";
 const { Octokit } = require("@octokit/action");
 
-const octokit = new Octokit();
+let octokit;
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -104,4 +105,21 @@ async function getJSON(repoPath) {
   return Buffer.from(response.data.content, response.data.encoding).toString();
 }
 
-run();
+async function handleOctokitError(e) {
+  core.info("Octokit Error - " + e);
+  if (passOnOctokitError) {
+    core.info("Passing CI regardless");
+  } else {
+    core.setFailed("Failing CI test");
+  }
+}
+
+try {
+  octokit = new Octokit();
+} catch (e) {
+  handleOctokitError(e);
+}
+
+if (octokit) {
+  run();
+}
