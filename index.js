@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 import * as github from "@actions/github";
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
 const issue_number = process.env.GITHUB_REF.split("/")[2];
-const configPath = core.getInput("configuration-path");
+const configPath = process.env.INPUT_CONFIGURATION_PATH;
 const passOnOctokitError = process.env.INPUT_PASS_ON_OCTOKIT_ERROR === "true";
 const { Octokit } = require("@octokit/action");
 

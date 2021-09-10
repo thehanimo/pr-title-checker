@@ -727,7 +727,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
 const issue_number = process.env.GITHUB_REF.split("/")[2];
-const configPath = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("configuration-path");
+const configPath = process.env.INPUT_CONFIGURATION_PATH;
 const passOnOctokitError = process.env.INPUT_PASS_ON_OCTOKIT_ERROR === "true";
 const { Octokit } = __webpack_require__(725);
 
