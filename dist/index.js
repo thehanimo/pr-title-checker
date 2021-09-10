@@ -739,14 +739,14 @@ async function run() {
     const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title;
     const labels = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.labels;
 
-    let a;
+    let config;
     try {
-      a = await getJSON(configPath);
+      config = await getJSON(configPath);
     } catch (e) {
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("Couldn't retrieve the config file specified - " + e);
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(`Couldn't retrieve the config file specified - ${e}`);
       return;
     }
-    let { CHECKS, LABEL } = JSON.parse(a);
+    let { CHECKS, LABEL } = JSON.parse(config);
     LABEL.name = LABEL.name || "title needs formatting";
     LABEL.color = LABEL.color || "eee";
     CHECKS.ignoreLabels = CHECKS.ignoreLabels || [];
@@ -754,22 +754,24 @@ async function run() {
     for (let i = 0; i < labels.length; i++) {
       for (let j = 0; j < CHECKS.ignoreLabels.length; j++) {
         if (labels[i].name == CHECKS.ignoreLabels[j]) {
-          _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Ignoring Title Check for label - " + labels[i].name);
+          _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Ignoring Title Check for label - ${labels[i].name}`);
           return;
         }
       }
     }
 
     try {
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Creating label (${LABEL.name})...`);
       let createResponse = await octokit.issues.createLabel({
         owner,
         repo,
         name: LABEL.name,
         color: LABEL.color,
       });
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Creating label (${LABEL.name}) - ` + createResponse.status);
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Created label (${LABEL.name}) - ${createResponse.status}`);
     } catch (error) {
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Label (${LABEL.name}) exists.`);
+      // Might not always be due to label's existence
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Label (${LABEL.name}) already created.`);
     }
     if (CHECKS.prefixes && CHECKS.prefixes.length) {
       for (let i = 0; i < CHECKS.prefixes.length; i++) {
@@ -796,32 +798,45 @@ async function run() {
 
 async function addLabel(name, alwaysPassCI) {
   try {
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Adding label (${name}) to PR...`);
     let addLabelResponse = await octokit.issues.addLabels({
       owner,
       repo,
       issue_number,
       labels: [name],
     });
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Adding label (${name}) - ` + addLabelResponse.status);
-    if (!alwaysPassCI) _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("Failing CI test");
-  } catch (error) {
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Added label (${name}) to PR - ${addLabelResponse.status}`);
+    if (!alwaysPassCI) {
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("Failing CI test");
+    }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("All OK");
+  } catch (error) {
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(error);
+    if (alwaysPassCI) {
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Failed to add label (${name}) to PR`);
+    } else {
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(`Failed to add label (${name}) to PR`);
+    }
   }
 }
 
 async function removeLabel(name) {
   try {
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("No formatting necessary. Removing label...");
     let removeLabelResponse = await octokit.issues.removeLabel({
       owner,
       repo,
       issue_number,
       name: name,
     });
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(
-      "No mismatches found. Deleting label - " + removeLabelResponse.status
-    );
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Removed label - ${removeLabelResponse.status}`);
   } catch (error) {
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("All OK");
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(error);
+    if (alwaysPassCI) {
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Failed to remove label (${name}) from PR`);
+    } else {
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(`Failed to remove label (${name}) from PR`);
+    }
   }
 }
 
@@ -837,7 +852,7 @@ async function getJSON(repoPath) {
 }
 
 async function handleOctokitError(e) {
-  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Octokit Error - " + e);
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Octokit Error - ${e}`);
   if (passOnOctokitError) {
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Passing CI regardless");
   } else {
