@@ -18,6 +18,7 @@ Create a config file `.github/pr-title-checker-config.json` like this one below:
   "CHECKS": {
     "prefixes": ["fix: ", "feat: "],
     "regexp": "docs\\(v[0-9]\\): ",
+    "regexpFlags": "i",
     "ignoreLabels" : ["dont-check-PRs-with-this-label", "meta"]
   }
 }

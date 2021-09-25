@@ -58,7 +58,7 @@ async function run() {
     }
 
     if (CHECKS.regexp) {
-      let re = new RegExp(CHECKS.regexp);
+      let re = new RegExp(CHECKS.regexp, CHECKS.regexpFlags || '');
       if (re.test(title)) {
         removeLabel(LABEL.name);
         return;
