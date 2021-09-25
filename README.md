@@ -23,6 +23,7 @@ Create a config file `.github/pr-title-checker-config.json` like this one below:
   }
 }
 ```
+You can pass in one of `prefixes` or `regexp` or even both based on your use case. `regexpFlags` and `ignoreLables` are optional fields.
 
 If none of the checks pass, a label will be added to that pull request. \
 If at least one of them passes, the label will be removed.
@@ -50,7 +51,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: thehanimo/pr-title-checker@v1.3
+      - uses: thehanimo/pr-title-checker@v1.3.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
