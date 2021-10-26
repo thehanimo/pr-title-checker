@@ -36,7 +36,7 @@ Also, adding label names to the optional `ignoreLabels` field will forfeit any c
 
 Create a workflow (eg: `.github/workflows/pr-title-checker.yml` see [Creating a Workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file)) to utilize the pr-title-checker action with content:
 
-```
+```yaml
 name: "PR Title Checker"
 on:
   pull_request_target:
