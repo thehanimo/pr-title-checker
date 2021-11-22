@@ -20,6 +20,11 @@ Create a config file `.github/pr-title-checker-config.json` like this one below:
     "regexp": "docs\\(v[0-9]\\): ",
     "regexpFlags": "i",
     "ignoreLabels" : ["dont-check-PRs-with-this-label", "meta"]
+  },
+  "MESSAGES": {
+    "success": "All OK",
+    "failure": "Failing CI test",
+    "notice": ""
   }
 }
 ```
@@ -51,7 +56,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: thehanimo/pr-title-checker@v1.3.2
+      - uses: thehanimo/pr-title-checker@v1.3.3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
