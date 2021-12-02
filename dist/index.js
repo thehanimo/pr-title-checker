@@ -759,7 +759,7 @@ async function run() {
       for (let j = 0; j < CHECKS.ignoreLabels.length; j++) {
         if (labels[i].name == CHECKS.ignoreLabels[j]) {
           _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Ignoring Title Check for label - ${labels[i].name}`);
-          removeLabel(labels, LABEL.name, true);
+          removeLabel(labels, LABEL.name);
           return;
         }
       }
@@ -781,7 +781,7 @@ async function run() {
     if (CHECKS.prefixes && CHECKS.prefixes.length) {
       for (let i = 0; i < CHECKS.prefixes.length; i++) {
         if (title.startsWith(CHECKS.prefixes[i])) {
-          removeLabel(labels, LABEL.name, CHECKS.alwaysPassCI);
+          removeLabel(labels, LABEL.name);
           _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(MESSAGES.success);
           return;
         }
@@ -791,7 +791,7 @@ async function run() {
     if (CHECKS.regexp) {
       let re = new RegExp(CHECKS.regexp, CHECKS.regexpFlags || "");
       if (re.test(title)) {
-        removeLabel(labels, LABEL.name, CHECKS.alwaysPassCI);
+        removeLabel(labels, LABEL.name);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(MESSAGES.success);
         return;
       }
@@ -837,7 +837,7 @@ async function addLabel(name) {
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Added label (${name}) to PR - ${addLabelResponse.status}`);
 }
 
-async function removeLabel(labels, name, alwaysPassCI) {
+async function removeLabel(labels, name) {
   try {
     if (
       !labels
@@ -856,12 +856,7 @@ async function removeLabel(labels, name, alwaysPassCI) {
     });
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Removed label - ${removeLabelResponse.status}`);
   } catch (error) {
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(error);
-    if (alwaysPassCI) {
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Failed to remove label (${name}) from PR`);
-    } else {
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(`Failed to remove label (${name}) from PR`);
-    }
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Failed to remove label (${name}) from PR: ${error}`);
   }
 }
 
