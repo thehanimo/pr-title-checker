@@ -34,7 +34,7 @@ async function run() {
       for (let j = 0; j < CHECKS.ignoreLabels.length; j++) {
         if (labels[i].name == CHECKS.ignoreLabels[j]) {
           core.info(`Ignoring Title Check for label - ${labels[i].name}`);
-          removeLabel(labels, LABEL.name, true);
+          removeLabel(labels, LABEL.name);
           return;
         }
       }
@@ -56,7 +56,7 @@ async function run() {
     if (CHECKS.prefixes && CHECKS.prefixes.length) {
       for (let i = 0; i < CHECKS.prefixes.length; i++) {
         if (title.startsWith(CHECKS.prefixes[i])) {
-          removeLabel(labels, LABEL.name, CHECKS.alwaysPassCI);
+          removeLabel(labels, LABEL.name);
           core.info(MESSAGES.success);
           return;
         }
@@ -66,7 +66,7 @@ async function run() {
     if (CHECKS.regexp) {
       let re = new RegExp(CHECKS.regexp, CHECKS.regexpFlags || "");
       if (re.test(title)) {
-        removeLabel(labels, LABEL.name, CHECKS.alwaysPassCI);
+        removeLabel(labels, LABEL.name);
         core.info(MESSAGES.success);
         return;
       }
@@ -112,7 +112,7 @@ async function addLabel(name) {
   core.info(`Added label (${name}) to PR - ${addLabelResponse.status}`);
 }
 
-async function removeLabel(labels, name, alwaysPassCI) {
+async function removeLabel(labels, name) {
   try {
     if (
       !labels
@@ -131,12 +131,7 @@ async function removeLabel(labels, name, alwaysPassCI) {
     });
     core.info(`Removed label - ${removeLabelResponse.status}`);
   } catch (error) {
-    core.info(error);
-    if (alwaysPassCI) {
-      core.info(`Failed to remove label (${name}) from PR`);
-    } else {
-      core.setFailed(`Failed to remove label (${name}) from PR`);
-    }
+    core.info(`Failed to remove label (${name}) from PR: ${error}`);
   }
 }
 
