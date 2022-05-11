@@ -736,13 +736,12 @@ let  JIRA_TICKETS = []
 async function run() {
   try {
     const { title, labels } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request;
-
     const getJiraTicketsFromPrTitle = ( ) => {
       const trimmedTitle=title.replaceAll("\\s","")
       JIRA_TICKETS  = trimmedTitle.split('-')[0].split('|')
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info( ` JIRA Ticket ${JIRA_TICKETS}`)
     }
-
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info( ` PR Title ${title}`)
     let pattern = /\d{4,5}/;
     const titleContainsJiraNumbers = pattern.test(title, "i");
 
