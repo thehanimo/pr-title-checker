@@ -10,9 +10,12 @@ inputs:
   pass_on_octokit_error:
     description: "force CI to pass if an octokit error (e.g. missing GITHUB_TOKEN) occurs"
     default: false
-  configuration_path:
-    description: "config file path"
-    default: ".github/pr-title-checker-config.json"
+  JIRA_TOKEN:
+    description: "token for connecting to remote Jira repository"
+    required: true
+outputs:
+  JIRA_TICKETS:
+    description: "Liste des tickets"
 runs:
   using: "node12"
   main: "dist/index.js"

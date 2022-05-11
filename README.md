@@ -1,9 +1,10 @@
 # Extracting Jira Ticket number(s) from a Pull Request Title 
 
 <!-- prettier-ignore -->
-This action checks if PR titles contains Jira Ticket numbers :1234-adding-a-style or 2345|4567-certif-a-style : <br/><br/>
-Consistent title names help maintainers organise their projects better :books: <br/><br/>
-Shows if the author has _reaaaaally_ read the Contribution Guidelines :P
+This action checks if PR titles contains Jira Ticket numbers :<br/>
+1234-adding-a-style<br/>
+2345|4567-certif-a-style : <br/>
+
 
 ## Usage
 
