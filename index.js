@@ -11,7 +11,6 @@ let  JIRA_TICKETS = []
 async function run() {
   try {
     const { title, labels } = github.context.payload.pull_request;
-
     const getJiraTicketsFromPrTitle = ( ) => {
       const trimmedTitle=title.replaceAll("\\s","")
       JIRA_TICKETS  = trimmedTitle.split('-')[0].split('|')
