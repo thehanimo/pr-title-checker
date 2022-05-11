@@ -13,8 +13,8 @@ async function run() {
     const title = github.context.payload.pull_request.title;
     const labels = github.context.payload.pull_request.labels;
     const getJiraTicketsFromPrTitle = ( ) => {
-      const trimmedTitle=title.replaceAll(" ","")
-      JIRA_TICKETS  = trimmedTitle.split('-')[0].split('|')
+      //const trimmedTitle=title.replaceAll(" ","")
+      JIRA_TICKETS  = title.split('-')[0].split('|')
       core.info( ` JIRA Ticket ${JIRA_TICKETS}`)
     }
     core.info( ` PR Title ${title}`)
