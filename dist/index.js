@@ -738,8 +738,8 @@ async function run() {
     const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title;
     const labels = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.labels;
     const getJiraTicketsFromPrTitle = ( ) => {
-      const trimmedTitle=title.replaceAll(" ","")
-      JIRA_TICKETS  = trimmedTitle.split('-')[0].split('|')
+      //const trimmedTitle=title.replaceAll(" ","")
+      JIRA_TICKETS  = title.split('-')[0].split('|')
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info( ` JIRA Ticket ${JIRA_TICKETS}`)
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info( ` PR Title ${title}`)
