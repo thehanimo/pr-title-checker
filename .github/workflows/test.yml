@@ -1,0 +1,14 @@
+name: "units-test"
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+  # test action works running from the graph
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
