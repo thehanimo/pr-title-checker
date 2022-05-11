@@ -16,7 +16,7 @@ async function run() {
       JIRA_TICKETS  = trimmedTitle.split('-')[0].split('|')
       core.info( ` JIRA Ticket ${JIRA_TICKETS}`)
     }
-
+    core.info( ` PR Title ${title}`)
     let pattern = /\d{4,5}/;
     const titleContainsJiraNumbers = pattern.test(title, "i");
 
