@@ -5,10 +5,6 @@ This action checks if PR titles contains Jira Ticket numbers :<br/>
 1234-adding-a-style<br/>
 2345|4567-certif-a-style : <br/>
 
-
-## Usage
-
-
 ## Create Workflow
 
 Create a workflow (eg: `.github/workflows/pr-title-checker.yml` see [Creating a Workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file)) to utilize the pr-title-checker action with content:
