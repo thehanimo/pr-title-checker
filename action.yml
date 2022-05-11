@@ -7,12 +7,6 @@ on: [pull_request]
 inputs:
   GITHUB_TOKEN:
     required: false
-  pass_on_octokit_error:
-    description: "force CI to pass if an octokit error (e.g. missing GITHUB_TOKEN) occurs"
-    default: false
-  JIRA_TOKEN:
-    description: "token for connecting to remote Jira repository"
-    required: true
 outputs:
   JIRA_TICKETS:
     description: "Liste des tickets"
