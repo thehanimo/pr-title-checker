@@ -10,9 +10,10 @@ let  JIRA_TICKETS = []
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const { title, labels } = github.context.payload.pull_request;
+    const title = github.context.payload.pull_request.title;
+    const labels = github.context.payload.pull_request.labels;
     const getJiraTicketsFromPrTitle = ( ) => {
-      const trimmedTitle=title.replaceAll("\\s","")
+      const trimmedTitle=title.replaceAll(" ","")
       JIRA_TICKETS  = trimmedTitle.split('-')[0].split('|')
       core.info( ` JIRA Ticket ${JIRA_TICKETS}`)
     }
