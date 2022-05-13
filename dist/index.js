@@ -749,7 +749,7 @@ async function run() {
       let ticket= 'Tickets:'
       ticket.concat(JIRA_TICKETS.forEach((TicketNumber)=>
       {
-        urlTicket.concat(TicketNumber)
+       return urlTicket.concat(TicketNumber)
 
       })  )
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` tickets ${ticket}`)

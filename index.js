@@ -24,7 +24,7 @@ async function run() {
       let ticket= 'Tickets:'
       ticket.concat(JIRA_TICKETS.forEach((TicketNumber)=>
       {
-        urlTicket.concat(TicketNumber)
+       return urlTicket.concat(TicketNumber)
 
       })  )
       core.info(` tickets ${ticket}`)
