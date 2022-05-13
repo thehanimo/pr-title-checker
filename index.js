@@ -39,7 +39,7 @@ async function buildCommentBody() {
   const emptySpace = 'hello'
   return emptySpace
 }
-async function createOrUpdateComment(body: string): Promise<void> {
+async function createOrUpdateComment(body) {
   core.info(`createOrUpdateComment (${body}) to PR...`)
   await octokit.rest.issues.createComment({
     owner,
