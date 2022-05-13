@@ -770,10 +770,10 @@ async function run() {
 
 async function createOrUpdateComment(body) {
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`createOrUpdateComment (${body}) to PR...`)
-  await octokit.rest.issues.createComment({
+  await octokit.rest.pulls.update({
     owner,
     repo,
-    issue_number,
+    pull_number: issue_number,
     body: "blabla",
   })
 }
