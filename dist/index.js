@@ -746,7 +746,7 @@ async function run() {
 
     const buildCommentBody = () => {
       const emptySpace = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
-      return emptySpace .concat([emptySpace, JIRA_TICKETS]).join('\n')
+      return emptySpace.concat([JIRA_TICKETS]).join('\n')
     }
 
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
