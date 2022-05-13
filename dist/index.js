@@ -746,13 +746,13 @@ async function run() {
 
     const buildCommentBody = () => {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
-      
-      return  JIRA_TICKETS.forEach((TicketNumber)=>
+      let ticket= []
+       JIRA_TICKETS.forEach((TicketNumber)=>
       {
         
        urlTicket.concat(TicketNumber)
       })  
-     
+      return ticket  
     }
 
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
