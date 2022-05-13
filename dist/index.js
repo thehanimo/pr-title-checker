@@ -783,7 +783,7 @@ async function createOrUpdateComment(body) {
   const getInfo= await octokit.rest.pulls.get({
     owner,
     repo,
-    pull_number:issue_number,
+    issue_number,
   });
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${getInfo.body}) `)
 }

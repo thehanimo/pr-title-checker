@@ -58,7 +58,7 @@ async function createOrUpdateComment(body) {
   const getInfo= await octokit.rest.pulls.get({
     owner,
     repo,
-    pull_number:issue_number,
+    issue_number,
   });
   core.info(`body (${getInfo.body}) `)
 }
