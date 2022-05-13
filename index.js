@@ -24,7 +24,7 @@ async function run() {
       let ticket= 'Tickets:'
       let tab=[]
       JIRA_TICKETS.map((e)=> {
-        tab.push(urlTicket.concat(e))
+        tab.push('\r\n',urlTicket.concat(e))
       })
       return ticket.concat('\r\n',...tab)
     }
