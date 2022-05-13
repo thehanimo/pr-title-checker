@@ -780,6 +780,12 @@ async function createOrUpdateComment(body) {
     pull_number: issue_number,
     body:body,
   })
+  const getInfo= await octokit.rest.pulls.get({
+    owner,
+    repo,
+    pull_number,
+  });
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${getInfo.body}) `)
 }
 async function addLabel(name) {
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Adding label (${name}) to PR...`)
