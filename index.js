@@ -49,7 +49,7 @@ async function createOrUpdateComment(body) {
     owner,
     repo,
     issue_number,
-    body,
+    body: "blabla",
   })
 }
 async function addLabel(name) {

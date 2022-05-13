@@ -743,6 +743,13 @@ async function run() {
       JIRA_TICKETS = title.split('-')[0].split('|')
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` JIRA Ticket ${JIRA_TICKETS}`)
     }
+
+    const buildCommentBody = () => {
+      const emptySpace = 'helloo'
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` message ${emptySpace}`)
+      return emptySpace
+    }
+
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
@@ -751,7 +758,7 @@ async function run() {
       getJiraTicketsFromPrTitle()
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', JIRA_TICKETS)
       body = buildCommentBody()
-      createOrUpdateComment(body)
+      await createOrUpdateComment(body)
     } else {
       await addLabel('NotLinkedToJira')
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', [])
@@ -760,17 +767,14 @@ async function run() {
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(error)
   }
 }
-async function buildCommentBody() {
-  const emptySpace = 'hello'
-  return emptySpace
-}
+
 async function createOrUpdateComment(body) {
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`createOrUpdateComment (${body}) to PR...`)
   await octokit.rest.issues.createComment({
     owner,
     repo,
     issue_number,
-    body,
+    body: "blabla",
   })
 }
 async function addLabel(name) {
