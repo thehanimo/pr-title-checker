@@ -20,8 +20,8 @@ async function run() {
     }
 
     const buildCommentBody = () => {
-      const emptySpace = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
-      return emptySpace.concat([JIRA_TICKETS])
+      const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
+      return urlTicket.concat([JIRA_TICKETS])
     }
 
     core.info(` PR Title ${title}`)
