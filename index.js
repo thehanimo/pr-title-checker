@@ -22,8 +22,10 @@ async function run() {
     const buildCommentBody = () => {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
-      return ticket.concat('\r\n',urlTicket.concat([JIRA_TICKETS]))
-      
+      JIRA_TICKETS.map((e,index)=> {
+        ticket.concat('\r\n',urlTicket.concat(e[index]))
+      })
+      return ticket
     }
 
     core.info(` PR Title ${title}`)
