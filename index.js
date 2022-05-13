@@ -21,13 +21,13 @@ async function run() {
 
     const buildCommentBody = () => {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
-      let ticket= []
-       JIRA_TICKETS.forEach((TicketNumber)=>
+      
+      return  JIRA_TICKETS.forEach((TicketNumber)=>
       {
         
-        ticket.push(urlTicket.concat(TicketNumber))
+       urlTicket.concat(TicketNumber)
       })  
-      return ticket  
+     
     }
 
     core.info(` PR Title ${title}`)
