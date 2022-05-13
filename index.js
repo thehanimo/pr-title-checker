@@ -26,7 +26,7 @@ async function run() {
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-      return ticket.concat('\r\n',...tab)
+      return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
     }
 
     core.info(` PR Title ${title}`)
