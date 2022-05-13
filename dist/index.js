@@ -751,7 +751,7 @@ async function run() {
       JIRA_TICKETS.map((e)=> {
         tab.push(urlTicket.concat(e))
       })
-      return ticket.concat(...tab)
+      return ticket.concat('\r\n',...tab)
     }
 
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
