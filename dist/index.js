@@ -780,8 +780,11 @@ async function createOrUpdateComment(body) {
     pull_number: issue_number,
     body:body,
   })
-  const bodyPR = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body
+  const bodyPR = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body.split('----------')[0]
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${bodyPR}) `)
+  if(bodyPR !=''){
+
+  }
 }
 async function addLabel(name) {
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Adding label (${name}) to PR...`)

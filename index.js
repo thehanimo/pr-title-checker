@@ -55,8 +55,11 @@ async function createOrUpdateComment(body) {
     pull_number: issue_number,
     body:body,
   })
-  const bodyPR = github.context.payload.pull_request.body
+  const bodyPR = github.context.payload.pull_request.body.split('----------')[0]
   core.info(`body (${bodyPR}) `)
+  if(bodyPR !=''){
+
+  }
 }
 async function addLabel(name) {
   core.info(`Adding label (${name}) to PR...`)
