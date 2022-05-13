@@ -27,6 +27,7 @@ async function run() {
         urlTicket.concat(TicketNumber)
 
       })  )
+      core.info(` tickets ${ticket}`)
       return ticket  
     }
 
