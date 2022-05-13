@@ -55,12 +55,8 @@ async function createOrUpdateComment(body) {
     pull_number: issue_number,
     body:body,
   })
-  const getInfo= await octokit.rest.pulls.get({
-    owner,
-    repo,
-    issue_number,
-  });
-  core.info(`body (${getInfo.body}) `)
+  const bodyPR = github.context.payload.pull_request.body
+  core.info(`body (${bodyPR}) `)
 }
 async function addLabel(name) {
   core.info(`Adding label (${name}) to PR...`)
