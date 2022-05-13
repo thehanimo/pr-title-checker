@@ -18,6 +18,13 @@ async function run() {
       JIRA_TICKETS = title.split('-')[0].split('|')
       core.info(` JIRA Ticket ${JIRA_TICKETS}`)
     }
+
+    const buildCommentBody = () => {
+      const emptySpace = 'helloo'
+      core.info(` message ${emptySpace}`)
+      return emptySpace
+    }
+
     core.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
@@ -34,10 +41,6 @@ async function run() {
   } catch (error) {
     core.info(error)
   }
-}
-const buildCommentBody = () => {
-  const emptySpace = 'helloo'
-  core.info(` message ${emptySpace}`)
 }
 
 async function createOrUpdateComment(body) {
