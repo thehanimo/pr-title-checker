@@ -4,11 +4,7 @@ permissions:
   pull-requests: write
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
-  push:
-    branches:
-      - main
-      - "releases/*"
+    types: [opened, reopened, synchronize, edited]
 
   # test action works running from the graph
 jobs:
