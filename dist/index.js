@@ -774,7 +774,7 @@ async function createOrUpdateComment(body) {
     owner,
     repo,
     pull_number: issue_number,
-    body: "blabla",
+    body:body,
   })
 }
 async function addLabel(name) {
