@@ -750,7 +750,7 @@ async function run() {
        JIRA_TICKETS.forEach((TicketNumber)=>
       {
         
-        ticket.push(urlTicket.concat([TicketNumber]).concat("\n"))
+        ticket.push(urlTicket.concat([TicketNumber]))
       })  
       return ticket  
     }
