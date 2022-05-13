@@ -36,7 +36,7 @@ async function run() {
   }
 }
 async function buildCommentBody() {
-  const emptySpace = 'hello'
+  const emptySpace = 'helloo'
   return emptySpace
 }
 async function createOrUpdateComment(body) {
