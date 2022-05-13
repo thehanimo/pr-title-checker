@@ -26,7 +26,7 @@ async function run() {
       getJiraTicketsFromPrTitle()
       core.setOutput('JIRA_TICKETS', JIRA_TICKETS)
       body = buildCommentBody()
-      createOrUpdateComment(body)
+      await createOrUpdateComment(body)
     } else {
       await addLabel('NotLinkedToJira')
       core.setOutput('JIRA_TICKETS', [])
@@ -35,10 +35,11 @@ async function run() {
     core.info(error)
   }
 }
-async function buildCommentBody() {
+const buildCommentBody = () => {
   const emptySpace = 'helloo'
-  return emptySpace
+  core.info(` message ${emptySpace}`)
 }
+
 async function createOrUpdateComment(body) {
   core.info(`createOrUpdateComment (${body}) to PR...`)
   await octokit.rest.issues.createComment({
