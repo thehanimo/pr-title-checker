@@ -745,7 +745,7 @@ async function run() {
     }
 
     const buildCommentBody = () => {
-      const urlTicket = 'support.apps.darva.com/browse/SINAPPSHAB-'
+      const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
       let tab=[]
       JIRA_TICKETS.map((e)=> {
