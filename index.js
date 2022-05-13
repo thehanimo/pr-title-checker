@@ -20,9 +20,8 @@ async function run() {
     }
 
     const buildCommentBody = () => {
-      const emptySpace = 'helloo'
-      core.info(` message ${emptySpace}`)
-      return emptySpace
+      const emptySpace = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
+      return emptySpace .concat([emptySpace, JIRA_TICKETS]).join('\n')
     }
 
     core.info(` PR Title ${title}`)
