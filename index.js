@@ -45,12 +45,14 @@ async function run() {
 
 async function createOrUpdateComment(body) {
   core.info(`createOrUpdateComment (${body}) to PR...`)
-  await octokit.rest.pulls.update({
+
+  await octokit.rest.issues.createComment({
     owner,
     repo,
-    pull_number: issue_number,
-    body: "blabla",
-  })
+    issue_number,
+    body,
+  });
+
 }
 async function addLabel(name) {
   core.info(`Adding label (${name}) to PR...`)
