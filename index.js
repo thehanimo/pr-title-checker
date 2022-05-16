@@ -58,7 +58,7 @@ async function createOrUpdateComment(body) {
   const comment =octokit.rest.pulls.listCommentsForReview({
     owner,
     repo,
-    pull_number,
+    pull_number:issue_number,
     review_id,
   });
   const bodyPR = github.context.payload.pull_request.body.split('----------')[0]
