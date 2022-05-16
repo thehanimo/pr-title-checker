@@ -8,7 +8,7 @@ const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
 const issue_number = github.context.issue.number
 const octokit = new Octokit()
 const JIRA_TICKETS = []
-const firstbody=github.context.payload.pull_request.body
+let  firstbody=github.context.payload.pull_request.body
 async function run() {
   try {
     const title = github.context.payload.pull_request.title
