@@ -756,7 +756,7 @@ async function run() {
         tab.push('\r\n',urlTicket.concat(e))
       })
       b=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')
-     return b.concat('\r\n',...bd)
+     return b.concat(...bd)
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
