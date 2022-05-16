@@ -743,7 +743,7 @@ async function run() {
     }
     const buildCommentBody = (firstbody) => {
       const ticket= 'Tickets:'
-      const tab=[] 
+      const tab = [] 
       const bodyData = ''
       const urlWithSeparator = ''
       JIRA_TICKETS.map((e)=> {
@@ -757,7 +757,7 @@ async function run() {
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
-    const titleContainsJiraNumbers = pattern.test(title, 'i')
+    let titleContainsJiraNumbers = pattern.test(title, 'i')
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', JIRA_TICKETS)

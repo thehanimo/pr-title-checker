@@ -18,7 +18,7 @@ async function run() {
     }
     const buildCommentBody = (firstbody) => {
       const ticket= 'Tickets:'
-      const tab=[] 
+      const tab = [] 
       const bodyData = ''
       const urlWithSeparator = ''
       JIRA_TICKETS.map((e)=> {
@@ -32,7 +32,7 @@ async function run() {
     }
     core.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
-    const titleContainsJiraNumbers = pattern.test(title, 'i')
+    let titleContainsJiraNumbers = pattern.test(title, 'i')
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
       core.setOutput('JIRA_TICKETS', JIRA_TICKETS)
