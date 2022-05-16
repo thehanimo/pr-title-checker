@@ -747,15 +747,18 @@ async function run() {
     const buildCommentBody = (firstbody) => {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
-      let tab=[]
-      const bd=firstbody.split('----------')[1]
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bd (${bd}) `)
+      let tab=[] 
+      let newBody=''
+      let bd=''
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`firstbody (${firstbody}) `)
-        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',firstbody)}
-
+      if(firstbody.contains('---------------------------')){
+        bd=firstbody.split('---------------------------')[1]
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bd (${bd}) `)
+      }
+     return ticket.concat(ticket.concat('\r\n',...tab).concat('\r\n','--------------------------').concat('\r\n',bd)) 
+    }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
