@@ -756,6 +756,7 @@ async function run() {
       if(firstbody.includes('---------------------------')){
         bodyData= firstbody.split('---------------------------')[1]
       }
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bodyData ${bodyData}`)
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')
      return urlWithSeparator.concat('\r\n',bodyData)
     }

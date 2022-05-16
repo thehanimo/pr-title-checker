@@ -31,6 +31,7 @@ async function run() {
       if(firstbody.includes('---------------------------')){
         bodyData= firstbody.split('---------------------------')[1]
       }
+      core.info(`bodyData ${bodyData}`)
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')
      return urlWithSeparator.concat('\r\n',bodyData)
     }
