@@ -748,6 +748,7 @@ async function run() {
       let ticket= 'Tickets:'
       let tab=[]
       const bd=firstbody.split('----------')[1]
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bd (${bd}) `)
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })

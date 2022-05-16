@@ -23,6 +23,7 @@ async function run() {
       let ticket= 'Tickets:'
       let tab=[]
       const bd=firstbody.split('----------')[1]
+      core.info(`bd (${bd}) `)
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
