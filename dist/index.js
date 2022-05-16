@@ -726,6 +726,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const separator = '--------------------------'
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
 const issue_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.issue.number
 const { Octokit } = __webpack_require__(725)
@@ -754,10 +755,10 @@ async function run() {
         tab.push('\r\n',urlTicket.concat(e))
       })
      if(firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
-       bodyData= firstbody.split('--------------------------')[1]
+       bodyData= firstbody.split(separator)[1]
        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`new Body Data ${bodyData}`)
      }
-      urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')
+      urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
      return urlWithSeparator.concat('\r\n',bodyData)
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)

@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 
+const separator = '--------------------------'
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
 const issue_number = github.context.issue.number
 const { Octokit } = require('@octokit/action')
@@ -29,10 +30,10 @@ async function run() {
         tab.push('\r\n',urlTicket.concat(e))
       })
      if(firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
-       bodyData= firstbody.split('--------------------------')[1]
+       bodyData= firstbody.split(separator)[1]
        core.info(`new Body Data ${bodyData}`)
      }
-      urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')
+      urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
      return urlWithSeparator.concat('\r\n',bodyData)
     }
     core.info(` PR Title ${title}`)
