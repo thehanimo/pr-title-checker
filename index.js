@@ -32,7 +32,7 @@ async function run() {
         bd=firstbody.split('---------------------------')[1]
         core.info(`bd (${bd}) `)
       }
-     return ticket.concat(ticket.concat('\r\n',...tab).concat('\r\n','--------------------------').concat('\r\n',bd)) 
+     return ticket.concat('\r\n',...tab).concat('\r\n','--------------------------').concat('\r\n',bd)
     }
     core.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/

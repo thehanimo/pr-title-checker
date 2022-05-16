@@ -757,7 +757,7 @@ async function run() {
         bd=firstbody.split('---------------------------')[1]
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bd (${bd}) `)
       }
-     return ticket.concat(ticket.concat('\r\n',...tab).concat('\r\n','--------------------------').concat('\r\n',bd)) 
+     return ticket.concat('\r\n',...tab).concat('\r\n','--------------------------').concat('\r\n',bd)
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
