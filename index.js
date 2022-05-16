@@ -18,12 +18,11 @@ async function run() {
       JIRA_TICKETS = title.split('-')[0].split('|')
       core.info(` JIRA Ticket ${JIRA_TICKETS}`)
     }
-    const buildCommentBody = () => {
+    const buildCommentBody = (firstbody) => {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
       let tab=[]
       const bd=firstbody.split('----------')[1]
-      core.info(`bd (${bd}) `)
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
@@ -37,7 +36,7 @@ async function run() {
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
       core.setOutput('JIRA_TICKETS', JIRA_TICKETS)
-      body = buildCommentBody()
+      body = buildCommentBody(firstbody)
       await createOrUpdateComment(body)
     } else {
       await addLabel('NotLinkedToJira')
