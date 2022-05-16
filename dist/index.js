@@ -760,12 +760,12 @@ async function run() {
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
-    let body
+    let bd
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', JIRA_TICKETS)
-      body = buildCommentBody(firstbody)
-      await createOrUpdateComment(body)
+      bd = buildCommentBody(firstbody)
+      await createOrUpdateComment(bd)
     } else {
       await addLabel('NotLinkedToJira')
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', [])
@@ -775,13 +775,13 @@ async function run() {
   }
 }
 
-async function createOrUpdateComment(body) {
+async function createOrUpdateComment(bd) {
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`createOrUpdateComment (${body}) to PR...`)
   await octokit.rest.pulls.update({
     owner,
     repo,
     pull_number: issue_number,
-    body:body,
+    body:bd,
   })
 }
 async function addLabel(name) {
