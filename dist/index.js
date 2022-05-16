@@ -753,9 +753,9 @@ async function run() {
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-     if(firstbody.toString().includes('---------------------------')){
+     if(firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
        bodyData= firstbody.split('---------------------------')[1]
-       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bodyData ${bodyData}`)
+       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`new Body Data ${bodyData}`)
      }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')
      return urlWithSeparator.concat('\r\n',bodyData)
