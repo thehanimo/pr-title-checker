@@ -21,7 +21,7 @@ async function run() {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       const ticket= 'Tickets:'
       let tab=[]
-      const urlWithSeparator=''
+      let urlWithSeparator=''
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
