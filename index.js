@@ -31,7 +31,7 @@ async function run() {
      return urlWithSeparator.concat('\r\n', firstbody)
     }
     core.info(` PR Title ${title}`)
-    const pattern = /\d{4,5}/
+    let pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
