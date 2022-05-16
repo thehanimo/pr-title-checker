@@ -13,7 +13,7 @@ async function run() {
     const title = github.context.payload.pull_request.title
     const labels = github.context.payload.pull_request.labels
    
-    core.info(`body data ${firstbody}`)
+    core.info(`firstbody ${firstbody}`)
     const getJiraTicketsFromPrTitle = () => {
       //const trimmedTitle=title.replaceAll(" ","")
       JIRA_TICKETS = title.split('-')[0].split('|')
@@ -29,7 +29,7 @@ async function run() {
         tab.push('\r\n',urlTicket.concat(e))
       })
      if(firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
-       bodyData= firstbody.split('---------------------------')[1]
+       bodyData= firstbody.split('--------------------------')[1]
        core.info(`new Body Data ${bodyData}`)
      }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')

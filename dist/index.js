@@ -738,7 +738,7 @@ async function run() {
     const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title
     const labels = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.labels
    
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body data ${firstbody}`)
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`firstbody ${firstbody}`)
     const getJiraTicketsFromPrTitle = () => {
       //const trimmedTitle=title.replaceAll(" ","")
       JIRA_TICKETS = title.split('-')[0].split('|')
@@ -754,7 +754,7 @@ async function run() {
         tab.push('\r\n',urlTicket.concat(e))
       })
      if(firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
-       bodyData= firstbody.split('---------------------------')[1]
+       bodyData= firstbody.split('--------------------------')[1]
        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`new Body Data ${bodyData}`)
      }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')
