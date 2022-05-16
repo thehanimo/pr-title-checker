@@ -753,7 +753,7 @@ async function run() {
      }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
     
-     return firstbody && urlWithSeparator.concat('\r\n', firstbody)
+     return urlWithSeparator.concat('\r\n', firstbody)
     }
     const pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
