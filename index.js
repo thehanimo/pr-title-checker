@@ -13,8 +13,6 @@ async function run() {
   try {
     const title = github.context.payload.pull_request.title
     const labels = github.context.payload.pull_request.labels
-   
-    core.info(`firstbody ${firstbody}`)
     const getJiraTicketsFromPrTitle = () => {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
@@ -27,13 +25,11 @@ async function run() {
       })
      if(firstbody && firstbody.toString().includes(urlTicket)){
       firstbody = firstbody.split(separator)[1]
-       core.info(`new Body Data ${firstbody}`)
      }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
     
      return firstbody && urlWithSeparator.concat('\r\n', firstbody)
     }
-    core.info(` PR Title ${title}`)
     const pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
     if (titleContainsJiraNumbers) {
@@ -51,7 +47,6 @@ async function run() {
 }
 
 async function createOrUpdateComment(bd) {
-  core.info(`in bd (${bd}) `)
   await octokit.rest.pulls.update({
     owner,
     repo,
@@ -60,14 +55,12 @@ async function createOrUpdateComment(bd) {
   })
 }
 async function addLabel(name) {
-  core.info(`Adding label (${name}) to PR...`)
   let addLabelResponse = await octokit.issues.addLabels({
     owner,
     repo,
     issue_number,
     labels: [name],
   })
-  core.info(`Added label (${name}) to PR - ${addLabelResponse.status}`)
 }
 if (octokit) {
   run()
