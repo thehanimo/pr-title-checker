@@ -755,11 +755,11 @@ async function run() {
         tab.push('\r\n',urlTicket.concat(e))
       })
      if(firstbody && firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
-       bodyData= firstbody.split(separator)[1]
-       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`new Body Data ${bodyData}`)
+      firstbody = firstbody.split(separator)[1]
+       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`new Body Data ${firstbody}`)
      }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
-     return urlWithSeparator.concat('\r\n', bodyData)
+     return urlWithSeparator.concat('\r\n', firstbody)
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
