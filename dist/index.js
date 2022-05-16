@@ -733,7 +733,6 @@ const { Octokit } = __webpack_require__(725)
 const octokit =new Octokit()
 let JIRA_TICKETS = []
 const firstbody=_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body
-// most @actions toolkit packages have async methods
 async function run() {
   try {
     const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title
@@ -741,13 +740,11 @@ async function run() {
    
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`firstbody ${firstbody}`)
     const getJiraTicketsFromPrTitle = () => {
-      //const trimmedTitle=title.replaceAll(" ","")
       JIRA_TICKETS = title.split('-')[0].split('|')
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` JIRA Ticket ${JIRA_TICKETS}`)
     }
     const buildCommentBody = (firstbody) => {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
-      let ticket= 'Tickets:'
+      const ticket= 'Tickets:'
       let tab=[] 
       let bodyData=''
       let urlWithSeparator=''

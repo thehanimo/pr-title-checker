@@ -8,7 +8,6 @@ const { Octokit } = require('@octokit/action')
 const octokit =new Octokit()
 let JIRA_TICKETS = []
 const firstbody=github.context.payload.pull_request.body
-// most @actions toolkit packages have async methods
 async function run() {
   try {
     const title = github.context.payload.pull_request.title
@@ -16,13 +15,11 @@ async function run() {
    
     core.info(`firstbody ${firstbody}`)
     const getJiraTicketsFromPrTitle = () => {
-      //const trimmedTitle=title.replaceAll(" ","")
       JIRA_TICKETS = title.split('-')[0].split('|')
-      core.info(` JIRA Ticket ${JIRA_TICKETS}`)
     }
     const buildCommentBody = (firstbody) => {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
-      let ticket= 'Tickets:'
+      const ticket= 'Tickets:'
       let tab=[] 
       let bodyData=''
       let urlWithSeparator=''
