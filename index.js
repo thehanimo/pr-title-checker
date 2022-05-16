@@ -36,7 +36,7 @@ async function run() {
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
       core.setOutput('JIRA_TICKETS', JIRA_TICKETS)
-      const bd = buildCommentBody(firstbody)
+      let bd = buildCommentBody(firstbody)
       await createOrUpdateComment(bd)
     } else {
       await addLabel('NotLinkedToJira')
