@@ -12,7 +12,7 @@ async function run() {
   try {
     const title = github.context.payload.pull_request.title
     const labels = github.context.payload.pull_request.labels
-    const firstbody=github.context.payload.pull_request.body
+    const firstbody=github.context.payload.pull_request.body.split('---------------------------')[1]
     core.info(`body data ${firstbody}`)
     const getJiraTicketsFromPrTitle = () => {
       //const trimmedTitle=title.replaceAll(" ","")
@@ -23,15 +23,12 @@ async function run() {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
       let tab=[] 
-      let b=''
-      bd=firstbody.split('---------------------------')[1]
-      core.info(`bd (${bd}) `)
-    
+      let urlWithSeparator=''
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-      b=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')
-     return b.concat(...bd)
+      urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')
+     return urlWithSeparator.concat(firstbody)
     }
     core.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
@@ -41,7 +38,6 @@ async function run() {
       getJiraTicketsFromPrTitle()
       core.setOutput('JIRA_TICKETS', JIRA_TICKETS)
       bd = buildCommentBody(firstbody)
-      core.info(`bd (${bd}) `)
       await createOrUpdateComment(bd)
     } else {
       await addLabel('NotLinkedToJira')
