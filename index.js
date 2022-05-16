@@ -22,11 +22,13 @@ async function run() {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
       let tab=[]
+      const bd=firstbody.split('----------')[1]
+      core.info(`bd (${bd}) `)
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-      core.info(`body (${body}) `)
-        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',...firstbody.split('----------')[1])}
+      core.info(`firstbody (${firstbody}) `)
+        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')}
 
     core.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/

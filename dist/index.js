@@ -747,11 +747,13 @@ async function run() {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
       let tab=[]
+      const bd=firstbody.split('----------')[1]
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bd (${bd}) `)
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${body}) `)
-        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',...firstbody.split('----------')[1])}
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`firstbody (${firstbody}) `)
+        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')}
 
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
