@@ -18,7 +18,6 @@ async function run() {
       JIRA_TICKETS = title.split('-')[0].split('|')
       core.info(` JIRA Ticket ${JIRA_TICKETS}`)
     }
-    core.info(`bd (${bd}) `)
     const buildCommentBody = () => {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
@@ -27,13 +26,7 @@ async function run() {
         tab.push('\r\n',urlTicket.concat(e))
       })
       core.info(`body (${body}) `)
-      if(firstbody!=undefined)
-       ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',...firstbody)
-      else  
-      ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
-
-      return ticket
-    }
+        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',...firstbody)}
 
     core.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/

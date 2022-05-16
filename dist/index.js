@@ -743,7 +743,6 @@ async function run() {
       JIRA_TICKETS = title.split('-')[0].split('|')
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` JIRA Ticket ${JIRA_TICKETS}`)
     }
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bd (${bd}) `)
     const buildCommentBody = () => {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
@@ -752,13 +751,7 @@ async function run() {
         tab.push('\r\n',urlTicket.concat(e))
       })
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${body}) `)
-      if(firstbody!=undefined)
-       ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',...firstbody)
-      else  
-      ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
-
-      return ticket
-    }
+        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',...firstbody)}
 
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
