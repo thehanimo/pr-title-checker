@@ -17,10 +17,10 @@ async function run() {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
     const buildCommentBody = (firstbody) => {
-      const ticket= 'Tickets:'
-      const tab = [] 
-      const bodyData = ''
-      const urlWithSeparator = ''
+      let ticket= 'Tickets:'
+      let tab = [] 
+      let bodyData = ''
+      let urlWithSeparator = ''
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
