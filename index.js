@@ -3,6 +3,7 @@ import * as github from '@actions/github'
 const { Octokit } = require('@octokit/action')
 
 const separator = '--------------------------'
+const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
 const issue_number = github.context.issue.number
 const octokit = new Octokit()
@@ -16,7 +17,6 @@ async function run() {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
     const buildCommentBody = (firstbody) => {
-      const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       const ticket= 'Tickets:'
       const tab=[] 
       const bodyData = ''
@@ -24,7 +24,7 @@ async function run() {
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-     if(firstbody && firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
+     if(firstbody && firstbody.toString().includes(urlTicket)){
       firstbody = firstbody.split(separator)[1]
      }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
