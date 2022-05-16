@@ -25,12 +25,9 @@ async function run() {
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-      if(body !=undefined){
-        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat(
-          github.context.payload.pull_request.body.split('----------')[1]
-        )
-      }else 
-      return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
+      core.info(`body (${body}) `)
+        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
+       
     }
 
     core.info(` PR Title ${title}`)
@@ -61,7 +58,6 @@ async function createOrUpdateComment(body) {
   })
 
   const bodyPR = github.context.payload.pull_request.body.split('----------')[0]
-  core.info(`comment (${comment}) `)
   if(bodyPR !=''){
    
   }

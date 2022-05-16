@@ -750,12 +750,9 @@ async function run() {
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-      if(body !=undefined){
-        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat(
-          _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body.split('----------')[1]
-        )
-      }else 
-      return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${body}) `)
+        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
+       
     }
 
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
@@ -786,7 +783,6 @@ async function createOrUpdateComment(body) {
   })
 
   const bodyPR = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body.split('----------')[0]
-  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`comment (${comment}) `)
   if(bodyPR !=''){
    
   }
