@@ -40,6 +40,7 @@ async function run() {
       getJiraTicketsFromPrTitle()
       core.setOutput('JIRA_TICKETS', JIRA_TICKETS)
       bd = buildCommentBody(firstbody)
+      core.info(`bd (${bd}) `)
       await createOrUpdateComment(bd)
     } else {
       await addLabel('NotLinkedToJira')
@@ -51,7 +52,7 @@ async function run() {
 }
 
 async function createOrUpdateComment(bd) {
-  core.info(`bd (${bd}) `)
+  core.info(`in bd (${bd}) `)
   await octokit.rest.pulls.update({
     owner,
     repo,

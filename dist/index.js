@@ -765,6 +765,7 @@ async function run() {
       getJiraTicketsFromPrTitle()
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', JIRA_TICKETS)
       bd = buildCommentBody(firstbody)
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bd (${bd}) `)
       await createOrUpdateComment(bd)
     } else {
       await addLabel('NotLinkedToJira')
@@ -776,7 +777,7 @@ async function run() {
 }
 
 async function createOrUpdateComment(bd) {
-  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bd (${bd}) `)
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`in bd (${bd}) `)
   await octokit.rest.pulls.update({
     owner,
     repo,
