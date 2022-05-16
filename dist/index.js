@@ -729,7 +729,6 @@ __webpack_require__.r(__webpack_exports__);
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
 const issue_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.issue.number
 const { Octokit } = __webpack_require__(725)
-
 let octokit
 let JIRA_TICKETS = []
 
@@ -751,6 +750,11 @@ async function run() {
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
+      if(body !=undefined){
+        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat(
+          _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body.split('----------')[1]
+        )
+      }else 
       return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
     }
 
@@ -780,12 +784,7 @@ async function createOrUpdateComment(body) {
     pull_number: issue_number,
     body:body,
   })
-  const comment =octokit.rest.pulls.listCommentsForReview({
-    owner,
-    repo,
-    pull_number:issue_number,
-    review_id,
-  });
+
   const bodyPR = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body.split('----------')[0]
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`comment (${comment}) `)
   if(bodyPR !=''){

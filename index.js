@@ -4,7 +4,6 @@ import * as github from '@actions/github'
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
 const issue_number = github.context.issue.number
 const { Octokit } = require('@octokit/action')
-
 let octokit
 let JIRA_TICKETS = []
 
@@ -26,6 +25,11 @@ async function run() {
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
+      if(body !=undefined){
+        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat(
+          github.context.payload.pull_request.body.split('----------')[1]
+        )
+      }else 
       return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
     }
 
@@ -55,12 +59,7 @@ async function createOrUpdateComment(body) {
     pull_number: issue_number,
     body:body,
   })
-  const comment =octokit.rest.pulls.listCommentsForReview({
-    owner,
-    repo,
-    pull_number:issue_number,
-    review_id,
-  });
+
   const bodyPR = github.context.payload.pull_request.body.split('----------')[0]
   core.info(`comment (${comment}) `)
   if(bodyPR !=''){
