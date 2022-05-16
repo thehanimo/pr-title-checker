@@ -755,7 +755,8 @@ async function run() {
        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`new Body Data ${firstbody}`)
      }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
-     return urlWithSeparator.concat('\r\n', firstbody)
+    
+     return firstbody && urlWithSeparator.concat('\r\n', firstbody)
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     const pattern = /\d{4,5}/

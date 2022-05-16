@@ -30,7 +30,8 @@ async function run() {
        core.info(`new Body Data ${firstbody}`)
      }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
-     return urlWithSeparator.concat('\r\n', firstbody)
+    
+     return firstbody && urlWithSeparator.concat('\r\n', firstbody)
     }
     core.info(` PR Title ${title}`)
     const pattern = /\d{4,5}/
