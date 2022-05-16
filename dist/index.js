@@ -783,11 +783,12 @@ async function createOrUpdateComment(body) {
   const bodyPR = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body.split('----------')[0]
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${bodyPR}) `)
   if(bodyPR !=''){
-  
+    const bodyAfterUpdate = bodyPR.concat('\r\n',)
   }
 }
 async function addLabel(name) {
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Adding label (${name}) to PR...`)
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${body}) `)
   let addLabelResponse = await octokit.issues.addLabels({
     owner,
     repo,

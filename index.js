@@ -58,11 +58,12 @@ async function createOrUpdateComment(body) {
   const bodyPR = github.context.payload.pull_request.body.split('----------')[0]
   core.info(`body (${bodyPR}) `)
   if(bodyPR !=''){
-  
+    const bodyAfterUpdate = bodyPR.concat('\r\n',)
   }
 }
 async function addLabel(name) {
   core.info(`Adding label (${name}) to PR...`)
+  core.info(`body (${body}) `)
   let addLabelResponse = await octokit.issues.addLabels({
     owner,
     repo,
