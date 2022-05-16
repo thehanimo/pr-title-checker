@@ -28,7 +28,7 @@ async function run() {
         tab.push('\r\n',urlTicket.concat(e))
       })
       core.info(`firstbody (${firstbody}) `)
-        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')}
+        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',firstbody)}
 
     core.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
