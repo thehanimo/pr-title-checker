@@ -725,50 +725,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
 
 
+const { Octokit } = __webpack_require__(725)
 
 const separator = '--------------------------'
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
 const issue_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.issue.number
-const { Octokit } = __webpack_require__(725)
-let octokit
-let JIRA_TICKETS = []
+const octokit = new Octokit()
+const JIRA_TICKETS = []
 const firstbody=_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body
-// most @actions toolkit packages have async methods
 async function run() {
   try {
     const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title
     const labels = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.labels
-   
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`firstbody ${firstbody}`)
     const getJiraTicketsFromPrTitle = () => {
-      //const trimmedTitle=title.replaceAll(" ","")
       JIRA_TICKETS = title.split('-')[0].split('|')
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` JIRA Ticket ${JIRA_TICKETS}`)
     }
     const buildCommentBody = (firstbody) => {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
-      let ticket= 'Tickets:'
-      let tab=[] 
-      let bodyData=''
-      let urlWithSeparator=''
+      const ticket= 'Tickets:'
+      const tab=[] 
+      const bodyData = ''
+      const urlWithSeparator = ''
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
      if(firstbody && firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
       firstbody = firstbody.split(separator)[1]
-       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`new Body Data ${firstbody}`)
      }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
      return urlWithSeparator.concat('\r\n', firstbody)
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
-    let pattern = /\d{4,5}/
+    const pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
-    let bd
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', JIRA_TICKETS)
-      bd = buildCommentBody(firstbody)
+      const bd = buildCommentBody(firstbody)
       await createOrUpdateComment(bd)
     } else {
       await addLabel('NotLinkedToJira')
@@ -780,7 +773,6 @@ async function run() {
 }
 
 async function createOrUpdateComment(bd) {
-  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`in bd (${bd}) `)
   await octokit.rest.pulls.update({
     owner,
     repo,
@@ -791,19 +783,13 @@ async function createOrUpdateComment(bd) {
 async function addLabel(name) {
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Adding label (${name}) to PR...`)
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${body}) `)
-  let addLabelResponse = await octokit.issues.addLabels({
+  const addLabelResponse = await octokit.issues.addLabels({
     owner,
     repo,
     issue_number,
     labels: [name],
   })
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Added label (${name}) to PR - ${addLabelResponse.status}`)
-}
-
-try {
-  octokit = new Octokit()
-} catch (e) {
-  handleOctokitError(e)
 }
 
 if (octokit) {
