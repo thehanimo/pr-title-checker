@@ -732,7 +732,7 @@ const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
 const issue_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.issue.number
 const octokit = new Octokit()
-const JIRA_TICKETS = []
+let JIRA_TICKETS = []
 let  firstbody=_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body
 async function run() {
   try {
