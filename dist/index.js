@@ -780,10 +780,16 @@ async function createOrUpdateComment(body) {
     pull_number: issue_number,
     body:body,
   })
+  const comment =octokit.rest.pulls.listCommentsForReview({
+    owner,
+    repo,
+    pull_number,
+    review_id,
+  });
   const bodyPR = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body.split('----------')[0]
-  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${bodyPR}) `)
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`comment (${comment}) `)
   if(bodyPR !=''){
-    const bodyAfterUpdate = bodyPR.concat('\r\n',)
+   
   }
 }
 async function addLabel(name) {
