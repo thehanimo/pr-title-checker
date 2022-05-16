@@ -30,10 +30,10 @@ async function run() {
         tab.push('\r\n',urlTicket.concat(e))
       })
      if(firstbody && firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
-       bodyData = bodyData.concat('\r\n', separator).concat(firstbody.split(separator)[1])
+       bodyData= firstbody.split(separator)[1]
        core.info(`new Body Data ${bodyData}`)
      }
-      urlWithSeparator=ticket.concat('\r\n',...tab)
+      urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
      return urlWithSeparator.concat('\r\n', bodyData)
     }
     core.info(` PR Title ${title}`)
