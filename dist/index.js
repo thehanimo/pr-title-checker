@@ -783,7 +783,7 @@ async function createOrUpdateComment(bd) {
 async function addLabel(name) {
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Adding label (${name}) to PR...`)
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${body}) `)
-  const addLabelResponse = await octokit.issues.addLabels({
+  let addLabelResponse = await octokit.issues.addLabels({
     owner,
     repo,
     issue_number,

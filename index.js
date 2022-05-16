@@ -58,7 +58,7 @@ async function createOrUpdateComment(bd) {
 async function addLabel(name) {
   core.info(`Adding label (${name}) to PR...`)
   core.info(`body (${body}) `)
-  const addLabelResponse = await octokit.issues.addLabels({
+  let addLabelResponse = await octokit.issues.addLabels({
     owner,
     repo,
     issue_number,
