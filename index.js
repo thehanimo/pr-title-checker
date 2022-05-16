@@ -5,7 +5,7 @@ const separator = '--------------------------'
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
 const issue_number = github.context.issue.number
 const { Octokit } = require('@octokit/action')
-let octokit
+const octokit =new Octokit()
 let JIRA_TICKETS = []
 const firstbody=github.context.payload.pull_request.body
 // most @actions toolkit packages have async methods
@@ -72,13 +72,6 @@ async function addLabel(name) {
   })
   core.info(`Added label (${name}) to PR - ${addLabelResponse.status}`)
 }
-
-try {
-  octokit = new Octokit()
-} catch (e) {
-  handleOctokitError(e)
-}
-
 if (octokit) {
   run()
 }

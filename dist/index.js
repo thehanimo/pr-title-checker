@@ -730,7 +730,7 @@ const separator = '--------------------------'
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
 const issue_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.issue.number
 const { Octokit } = __webpack_require__(725)
-let octokit
+const octokit =new Octokit()
 let JIRA_TICKETS = []
 const firstbody=_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body
 // most @actions toolkit packages have async methods
@@ -797,13 +797,6 @@ async function addLabel(name) {
   })
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Added label (${name}) to PR - ${addLabelResponse.status}`)
 }
-
-try {
-  octokit = new Octokit()
-} catch (e) {
-  handleOctokitError(e)
-}
-
 if (octokit) {
   run()
 }
