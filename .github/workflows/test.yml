@@ -1,7 +1,10 @@
 name: "units-test"
+permissions:
+  issues: write
+  pull-requests: write
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
+    types: [opened, reopened, synchronize, edited]
 
   # test action works running from the graph
 jobs:
