@@ -755,7 +755,7 @@ async function run() {
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-     return ticket.concat('\r\n',...tab).concat('\r\n','--------------------------').concat('\r\n',bd)
+     return ticket.concat('\r\n',tab).concat('\r\n','--------------------------').concat('\r\n',bd)
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
@@ -776,7 +776,6 @@ async function run() {
 }
 
 async function createOrUpdateComment(bd) {
-  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`createOrUpdateComment (${body}) to PR...`)
   await octokit.rest.pulls.update({
     owner,
     repo,
