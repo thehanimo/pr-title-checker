@@ -12,7 +12,7 @@ async function run() {
   try {
     const title = github.context.payload.pull_request.title
     const labels = github.context.payload.pull_request.labels
-    const firstbody=github.context.payload.pull_request.body.split('---------------------------')[1]
+    const firstbody=github.context.payload.pull_request.body
     core.info(`body data ${firstbody}`)
     const getJiraTicketsFromPrTitle = () => {
       //const trimmedTitle=title.replaceAll(" ","")
@@ -23,12 +23,16 @@ async function run() {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
       let tab=[] 
+      let bodyData=''
       let urlWithSeparator=''
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
+      if(firstbody.includes('---------------------------')){
+        bodyData= firstbody.split('---------------------------')[1]
+      }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')
-     return urlWithSeparator.concat('\r\n',firstbody)
+     return urlWithSeparator.concat('\r\n',bodyData)
     }
     core.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/

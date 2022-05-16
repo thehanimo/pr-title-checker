@@ -737,7 +737,7 @@ async function run() {
   try {
     const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title
     const labels = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.labels
-    const firstbody=_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body.split('---------------------------')[1]
+    const firstbody=_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body data ${firstbody}`)
     const getJiraTicketsFromPrTitle = () => {
       //const trimmedTitle=title.replaceAll(" ","")
@@ -748,12 +748,16 @@ async function run() {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
       let tab=[] 
+      let bodyData=''
       let urlWithSeparator=''
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
+      if(firstbody.includes('---------------------------')){
+        bodyData= firstbody.split('---------------------------')[1]
+      }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')
-     return urlWithSeparator.concat('\r\n',firstbody)
+     return urlWithSeparator.concat('\r\n',bodyData)
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
