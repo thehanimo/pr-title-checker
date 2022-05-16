@@ -12,7 +12,7 @@ async function run() {
   try {
     const title = github.context.payload.pull_request.title
     const labels = github.context.payload.pull_request.labels
-    const bd=github.context.payload.pull_request.body
+    const firstbody=github.context.payload.pull_request.body
     const getJiraTicketsFromPrTitle = () => {
       //const trimmedTitle=title.replaceAll(" ","")
       JIRA_TICKETS = title.split('-')[0].split('|')
@@ -27,8 +27,10 @@ async function run() {
         tab.push('\r\n',urlTicket.concat(e))
       })
       core.info(`body (${body}) `)
-        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
-       
+      if(firstbody!=undefined)
+        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',...firstbody)
+      else  
+      return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
     }
 
     core.info(` PR Title ${title}`)
