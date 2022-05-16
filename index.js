@@ -6,13 +6,13 @@ const issue_number = github.context.issue.number
 const { Octokit } = require('@octokit/action')
 let octokit
 let JIRA_TICKETS = []
-
+const firstbody=github.context.payload.pull_request.body
 // most @actions toolkit packages have async methods
 async function run() {
   try {
     const title = github.context.payload.pull_request.title
     const labels = github.context.payload.pull_request.labels
-    const firstbody=github.context.payload.pull_request.body
+   
     core.info(`body data ${firstbody}`)
     const getJiraTicketsFromPrTitle = () => {
       //const trimmedTitle=title.replaceAll(" ","")

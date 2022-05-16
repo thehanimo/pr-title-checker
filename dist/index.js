@@ -731,13 +731,13 @@ const issue_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.issue.
 const { Octokit } = __webpack_require__(725)
 let octokit
 let JIRA_TICKETS = []
-
+const firstbody=_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body
 // most @actions toolkit packages have async methods
 async function run() {
   try {
     const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title
     const labels = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.labels
-    const firstbody=_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body
+   
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body data ${firstbody}`)
     const getJiraTicketsFromPrTitle = () => {
       //const trimmedTitle=title.replaceAll(" ","")
