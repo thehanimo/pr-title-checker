@@ -29,7 +29,7 @@ async function run() {
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-     if(firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
+     if(firstbody && firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
        bodyData= firstbody.split(separator)[1]
        core.info(`new Body Data ${bodyData}`)
      }
