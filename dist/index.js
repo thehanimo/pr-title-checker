@@ -727,6 +727,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const separator = '--------------------------'
+const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
 const issue_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.issue.number
 const { Octokit } = __webpack_require__(725)
@@ -743,14 +744,13 @@ async function run() {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
     const buildCommentBody = (firstbody) => {
-      const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       const ticket= 'Tickets:'
       let tab=[]
       let urlWithSeparator=''
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-     if(firstbody && firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
+     if(firstbody && firstbody.toString().includes(urlTicket)){
       firstbody = firstbody.split(separator)[1]
        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`new Body Data ${firstbody}`)
      }

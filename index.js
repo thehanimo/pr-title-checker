@@ -2,6 +2,7 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 
 const separator = '--------------------------'
+const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
 const issue_number = github.context.issue.number
 const { Octokit } = require('@octokit/action')
@@ -18,14 +19,13 @@ async function run() {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
     const buildCommentBody = (firstbody) => {
-      const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       const ticket= 'Tickets:'
       let tab=[]
       let urlWithSeparator=''
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
-     if(firstbody && firstbody.toString().includes('https://support.apps.darva.com/browse/SINAPPSHAB')){
+     if(firstbody && firstbody.toString().includes(urlTicket)){
       firstbody = firstbody.split(separator)[1]
        core.info(`new Body Data ${firstbody}`)
      }
