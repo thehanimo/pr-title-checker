@@ -762,13 +762,12 @@ async function run() {
      return urlWithSeparator.concat('\r\n', firstbody)
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
-    let pattern = /\d{4,5}/
+    const pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
-    let bd
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', JIRA_TICKETS)
-      bd = buildCommentBody(firstbody)
+      const bd = buildCommentBody(firstbody)
       await createOrUpdateComment(bd)
     } else {
       await addLabel('NotLinkedToJira')
@@ -790,7 +789,6 @@ async function createOrUpdateComment(bd) {
 }
 async function addLabel(name) {
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Adding label (${name}) to PR...`)
-  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${body}) `)
   let addLabelResponse = await octokit.issues.addLabels({
     owner,
     repo,
