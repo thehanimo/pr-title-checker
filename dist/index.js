@@ -754,7 +754,7 @@ async function run() {
         tab.push('\r\n',urlTicket.concat(e))
       })
      
-        bodyData= firstbody.split('---------------------------')[1]
+        bodyData= firstbody.split('---------------------------')[0]
       
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bodyData ${bodyData}`)
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n','--------------------------')
