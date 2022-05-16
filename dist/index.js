@@ -753,9 +753,11 @@ async function run() {
       })
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`body (${body}) `)
       if(firstbody!=undefined)
-        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',...firstbody)
+       ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',...firstbody)
       else  
-      return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
+      ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
+
+      return ticket
     }
 
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)

@@ -28,9 +28,11 @@ async function run() {
       })
       core.info(`body (${body}) `)
       if(firstbody!=undefined)
-        return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',...firstbody)
+       ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------').concat('\r\n',...firstbody)
       else  
-      return ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
+      ticket.concat('\r\n',...tab).concat('\r\n','-------------------------------------------------------------------')
+
+      return ticket
     }
 
     core.info(` PR Title ${title}`)
