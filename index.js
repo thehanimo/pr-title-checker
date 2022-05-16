@@ -24,10 +24,9 @@ async function run() {
       let ticket= 'Tickets:'
       let tab=[] 
       let bd=''
-      if(firstbody.includes('---------------------------')){
-        bd=firstbody.split('---------------------------')[1]
-        core.info(`bd (${bd}) `)
-      }
+      bd=firstbody.split('---------------------------')[1]
+      core.info(`bd (${bd}) `)
+    
       JIRA_TICKETS.map((e)=> {
         tab.push('\r\n',urlTicket.concat(e))
       })
