@@ -748,16 +748,15 @@ async function run() {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
       let tab=[] 
-      let newBody=''
       let bd=''
-      JIRA_TICKETS.map((e)=> {
-        tab.push('\r\n',urlTicket.concat(e))
-      })
       if(firstbody.includes('---------------------------')){
         bd=firstbody.split('---------------------------')[1]
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bd (${bd}) `)
       }
-     return ticket.concat('\r\n',...tab).concat('\r\n','--------------------------').concat('\r\n',bd)
+      JIRA_TICKETS.map((e)=> {
+        tab.push('\r\n',urlTicket.concat(e))
+      })
+     return ticket.concat('\r\n',...tab).concat('\r\n','--------------------------').concat('\r\n',...bd)
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` PR Title ${title}`)
     let pattern = /\d{4,5}/
@@ -785,11 +784,6 @@ async function createOrUpdateComment(body) {
     pull_number: issue_number,
     body:body,
   })
-
-  const bodyPR = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body.split('----------')[0]
-  if(bodyPR !=''){
-   
-  }
 }
 async function addLabel(name) {
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Adding label (${name}) to PR...`)
