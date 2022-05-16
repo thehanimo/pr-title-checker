@@ -772,6 +772,7 @@ async function run() {
 }
 
 async function createOrUpdateComment(bd) {
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info('ok')
   await octokit.rest.pulls.update({
     owner,
     repo,

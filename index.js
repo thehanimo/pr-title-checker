@@ -47,6 +47,7 @@ async function run() {
 }
 
 async function createOrUpdateComment(bd) {
+  core.info('ok')
   await octokit.rest.pulls.update({
     owner,
     repo,
