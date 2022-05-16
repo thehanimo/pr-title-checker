@@ -737,12 +737,13 @@ async function run() {
   try {
     const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title
     const labels = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.labels
+    const bd=_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body
     const getJiraTicketsFromPrTitle = () => {
       //const trimmedTitle=title.replaceAll(" ","")
       JIRA_TICKETS = title.split('-')[0].split('|')
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(` JIRA Ticket ${JIRA_TICKETS}`)
     }
-
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`bd (${bd}) `)
     const buildCommentBody = () => {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'

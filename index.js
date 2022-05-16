@@ -12,12 +12,13 @@ async function run() {
   try {
     const title = github.context.payload.pull_request.title
     const labels = github.context.payload.pull_request.labels
+    const bd=github.context.payload.pull_request.body
     const getJiraTicketsFromPrTitle = () => {
       //const trimmedTitle=title.replaceAll(" ","")
       JIRA_TICKETS = title.split('-')[0].split('|')
       core.info(` JIRA Ticket ${JIRA_TICKETS}`)
     }
-
+    core.info(`bd (${bd}) `)
     const buildCommentBody = () => {
       const urlTicket = 'https://support.apps.darva.com/browse/SINAPPSHAB-'
       let ticket= 'Tickets:'
