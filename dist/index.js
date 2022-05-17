@@ -774,7 +774,7 @@ async function run() {
     } else {
       await addLabel('NotLinkedToJira')
       const EmptyBody = buildCommentBody(firstbody.split(separator)[1])
-      await createOrUpdateComment(bd)
+      await createOrUpdateComment(EmptyBody)
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', [])
     }
   } catch (error) {
