@@ -741,7 +741,7 @@ async function run() {
     const getJiraTicketsFromPrTitle = () => {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`JIRA_TICKETS ${JIRA_TICKETS}`) 
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`JIRA_TICKETS ${JIRA_TICKETS.map((e)=>e)}`) 
     const buildCommentBody = (firstbody) => {
       const ticket= 'Tickets:'
       let tab=[]
