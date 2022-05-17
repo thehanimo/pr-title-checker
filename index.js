@@ -37,6 +37,8 @@ async function run() {
             }    
           }
           }
+
+          core.info(`tab$ {tab}`) 
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
      return urlWithSeparator.concat('\r\n', firstbody)
     }

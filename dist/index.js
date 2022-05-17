@@ -762,6 +762,8 @@ async function run() {
             }    
           }
           }
+
+          _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`tab$ {tab}`) 
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
      return urlWithSeparator.concat('\r\n', firstbody)
     }
