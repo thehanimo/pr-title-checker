@@ -24,7 +24,7 @@ async function run() {
       tab.push('\r\n',urlTicket.concat(e))
       })
       if (firstbody==undefined){
-        core.info(`firstbody == undefined ${firstbody}`) 
+        core.info(`test firstbody == undefined ${firstbody}`) 
         firstbody=''
       }
       else {
