@@ -764,8 +764,6 @@ async function run() {
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
       return urlWithSeparator.concat('\r\n', firstbody)
     }
-
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`firstbody ${firstbody}`) 
   
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
