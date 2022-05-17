@@ -748,13 +748,11 @@ async function run() {
       let tab=[]
       let urlWithSeparator=''
       JIRA_TICKETS.map((e)=> {
-        const newUrl = urlTicket.concat(e)
-        tab.push('\r\n', newUrl)
+      tab.push('\r\n',urlTicket.concat(e))
       })
 
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`url ticket jira ${urlTicket}`)
-      if (firstbody == undefined || firstbody.localeCompare(urlTicket)){
-        firstbody = ''
+      if (firstbody==undefined){
+        firstbody=''
       }
       else {
           if(firstbody && firstbody.toString().includes(urlTicket)){
