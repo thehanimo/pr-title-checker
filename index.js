@@ -22,9 +22,12 @@ async function run() {
       const ticket= 'Tickets:'
       let tab=[]
       let urlWithSeparator=''
+      JIRA_TICKETS_IN_BODY=firstbody.split('Tickets:')[1].split('-')[1]
+      core.info(`JIRA_TICKETS_IN_BODY ${JIRA_TICKETS_IN_BODY}`) 
       JIRA_TICKETS.map((e)=> {
       tab.push('\r\n',urlTicket.concat(e))
       })
+
       if (firstbody==undefined){
         core.info(`test firstbody == undefined ${firstbody}`) 
         firstbody=''
