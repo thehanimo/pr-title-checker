@@ -738,6 +738,8 @@ async function run() {
   try {
     const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title
     const labels = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.labels
+    const pattern = /\d{4,5}/
+    const titleContainsJiraNumbers = pattern.test(title, 'i')
     const getJiraTicketsFromPrTitle = () => {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
@@ -746,26 +748,32 @@ async function run() {
       let tab=[]
       let urlWithSeparator=''
       JIRA_TICKETS.map((e)=> {
-        tab.push('\r\n',urlTicket.concat(e))
+      tab.push('\r\n',urlTicket.concat(e))
       })
-     if(firstbody && firstbody.toString().includes(urlTicket)){
-      firstbody = firstbody.split(separator)[1]
-     }
-     else 
-      firstbody=''
-    urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
-    
-     return urlWithSeparator.concat('\r\n', firstbody)
+
+      if (firstbody==undefined){
+        firstbody=''
+      }
+      else {
+          if(firstbody && firstbody.toString().includes(urlTicket)){
+            if(firstbody.toString().includes(separator)){
+              firstbody = firstbody.split(separator)[1]
+            }    
+          }
+          }
+      urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
+      return urlWithSeparator.concat('\r\n', firstbody)
     }
-    const pattern = /\d{4,5}/
-    const titleContainsJiraNumbers = pattern.test(title, 'i')
+  
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', JIRA_TICKETS)
       const bd = buildCommentBody(firstbody)
       await createOrUpdateComment(bd)
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', JIRA_TICKETS)
     } else {
       await addLabel('NotLinkedToJira')
+      const EmptyBody = firstbody.split(separator)[1]
+      await createOrUpdateComment(EmptyBody)
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', [])
     }
   } catch (error) {
