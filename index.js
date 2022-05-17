@@ -16,7 +16,6 @@ async function run() {
     const getJiraTicketsFromPrTitle = () => {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
-    core.info(`JIRA_TICKETS ${JIRA_TICKETS.map((e)=>e)}`) 
     const buildCommentBody = (firstbody) => {
       const ticket= 'Tickets:'
       let tab=[]
@@ -32,7 +31,6 @@ async function run() {
           if(firstbody && firstbody.toString().includes(urlTicket)){
             if(firstbody.toString().includes(separator)){
               firstbody = firstbody.split(separator)[1]
-              core.info(`firstbody ${firstbody}`) 
             }    
           }
           }
@@ -41,7 +39,7 @@ async function run() {
     }
     const pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
-
+    core.info(`firstbody ${firstbody}`) 
   
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()

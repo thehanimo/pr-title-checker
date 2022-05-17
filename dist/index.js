@@ -741,7 +741,6 @@ async function run() {
     const getJiraTicketsFromPrTitle = () => {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`JIRA_TICKETS ${JIRA_TICKETS.map((e)=>e)}`) 
     const buildCommentBody = (firstbody) => {
       const ticket= 'Tickets:'
       let tab=[]
@@ -757,7 +756,6 @@ async function run() {
           if(firstbody && firstbody.toString().includes(urlTicket)){
             if(firstbody.toString().includes(separator)){
               firstbody = firstbody.split(separator)[1]
-              _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`firstbody ${firstbody}`) 
             }    
           }
           }
@@ -766,7 +764,7 @@ async function run() {
     }
     const pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
-
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`firstbody ${firstbody}`) 
   
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
