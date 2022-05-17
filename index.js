@@ -13,6 +13,8 @@ async function run() {
   try {
     const title = github.context.payload.pull_request.title
     const labels = github.context.payload.pull_request.labels
+    const pattern = /\d{4,5}/
+    const titleContainsJiraNumbers = pattern.test(title, 'i')
     const getJiraTicketsFromPrTitle = () => {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
@@ -37,8 +39,7 @@ async function run() {
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
       return urlWithSeparator.concat('\r\n', firstbody)
     }
-    const pattern = /\d{4,5}/
-    const titleContainsJiraNumbers = pattern.test(title, 'i')
+
     core.info(`firstbody ${firstbody}`) 
   
     if (titleContainsJiraNumbers) {
@@ -48,7 +49,7 @@ async function run() {
       core.setOutput('JIRA_TICKETS', JIRA_TICKETS)
     } else {
       await addLabel('NotLinkedToJira')
-      const EmptyBody = buildCommentBody(firstbody.split(separator)[1])
+      const EmptyBody = firstbody.split(separator)[1]
       await createOrUpdateComment(EmptyBody)
       core.setOutput('JIRA_TICKETS', [])
     }

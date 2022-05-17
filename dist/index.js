@@ -738,6 +738,8 @@ async function run() {
   try {
     const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title
     const labels = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.labels
+    const pattern = /\d{4,5}/
+    const titleContainsJiraNumbers = pattern.test(title, 'i')
     const getJiraTicketsFromPrTitle = () => {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
@@ -762,8 +764,7 @@ async function run() {
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
       return urlWithSeparator.concat('\r\n', firstbody)
     }
-    const pattern = /\d{4,5}/
-    const titleContainsJiraNumbers = pattern.test(title, 'i')
+
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`firstbody ${firstbody}`) 
   
     if (titleContainsJiraNumbers) {
@@ -773,7 +774,7 @@ async function run() {
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', JIRA_TICKETS)
     } else {
       await addLabel('NotLinkedToJira')
-      const EmptyBody = buildCommentBody(firstbody.split(separator)[1])
+      const EmptyBody = firstbody.split(separator)[1]
       await createOrUpdateComment(EmptyBody)
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', [])
     }
