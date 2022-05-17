@@ -33,6 +33,7 @@ async function run() {
           if(firstbody && firstbody.toString().includes(urlTicket)){
             if(firstbody.toString().includes(separator)){
               firstbody = firstbody.split(separator)[1]
+              core.info(`firstbody ${firstbody}`) 
             }    
           }
           }

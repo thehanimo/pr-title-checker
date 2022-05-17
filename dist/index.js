@@ -758,6 +758,7 @@ async function run() {
           if(firstbody && firstbody.toString().includes(urlTicket)){
             if(firstbody.toString().includes(separator)){
               firstbody = firstbody.split(separator)[1]
+              _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`firstbody ${firstbody}`) 
             }    
           }
           }
