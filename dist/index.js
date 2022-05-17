@@ -747,8 +747,6 @@ async function run() {
       const ticket= 'Tickets:'
       let tab=[]
       let urlWithSeparator=''
-      JIRA_TICKETS_IN_BODY=firstbody.split('Tickets:')[1].split('-')[1]
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`JIRA_TICKETS_IN_BODY ${JIRA_TICKETS_IN_BODY}`) 
       JIRA_TICKETS.map((e)=> {
       tab.push('\r\n',urlTicket.concat(e))
       })
