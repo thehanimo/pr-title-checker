@@ -39,6 +39,9 @@ async function run() {
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
       return urlWithSeparator.concat('\r\n', firstbody)
     }
+
+    core.info(`firstbody ${firstbody}`) 
+  
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
       const bd = buildCommentBody(firstbody)
