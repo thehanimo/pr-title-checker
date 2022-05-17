@@ -742,13 +742,10 @@ async function run() {
     const getJiraTicketsFromPrTitle = () => {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(firstbody) 
     const buildCommentBody = (firstbody) => {
       const ticket= 'Tickets:'
       let tab=[]
       let urlWithSeparator=''
-      JIRA_TICKETS_IN_BODY=firstbody.split('Tickets:')[1].split('-')[1]
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`JIRA_TICKETS_IN_BODY ${JIRA_TICKETS_IN_BODY}`) 
       JIRA_TICKETS.map((e)=> {
       tab.push('\r\n',urlTicket.concat(e))
       })
@@ -765,7 +762,6 @@ async function run() {
           }
           }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(firstbody) 
      return urlWithSeparator.concat('\r\n', firstbody)
     }
     const pattern = /\d{4,5}/
