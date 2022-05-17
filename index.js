@@ -41,10 +41,11 @@ async function run() {
     }
     const pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
-    const bd = buildCommentBody(firstbody)
+
   
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
+      const bd = buildCommentBody(firstbody)
       await createOrUpdateComment(bd)
       core.setOutput('JIRA_TICKETS', JIRA_TICKETS)
     } else {
