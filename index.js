@@ -21,15 +21,18 @@ async function run() {
       let tab=[]
       let urlWithSeparator=''
       JIRA_TICKETS.map((e)=> {
-        tab.push('\r\n',urlTicket.concat(e))
+      tab.push('\r\n',urlTicket.concat(e))
       })
-     if(firstbody && firstbody.toString().includes(urlTicket)){
-      firstbody = firstbody.split(separator)[1]
-     }
-     else 
-      firstbody=''
-    urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
-    
+      if (firstbody==undefined){
+        firstbody=''
+      }
+      else {
+          if(firstbody && firstbody.toString().includes(urlTicket)){
+            firstbody = firstbody.split(separator)[1]
+          }
+          }
+      urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
+      core.info(firstbody) 
      return urlWithSeparator.concat('\r\n', firstbody)
     }
     const pattern = /\d{4,5}/
