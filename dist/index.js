@@ -755,7 +755,9 @@ async function run() {
       }
       else {
           if(firstbody && firstbody.toString().includes(urlTicket)){
-            firstbody = firstbody.split(separator)[1]
+            if(firstbody.toString().includes(separator)){
+              firstbody = firstbody.split(separator)[1]
+            }    
           }
           }
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
