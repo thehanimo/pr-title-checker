@@ -751,8 +751,8 @@ async function run() {
       tab.push('\r\n',urlTicket.concat(e))
       })
 
-      if (firstbody==undefined){
-        firstbody=''
+      if (firstbody == undefined || firstbody === urlTicket){
+        firstbody = ''
       }
       else {
           if(firstbody && firstbody.toString().includes(urlTicket)){
