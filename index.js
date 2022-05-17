@@ -8,6 +8,7 @@ const issue_number = github.context.issue.number
 const { Octokit } = require('@octokit/action')
 const octokit =new Octokit()
 let JIRA_TICKETS = []
+let  JIRA_TICKETS_IN_BODY=[]
 const firstbody=github.context.payload.pull_request.body
 async function run() {
   try {
@@ -21,6 +22,8 @@ async function run() {
       const ticket= 'Tickets:'
       let tab=[]
       let urlWithSeparator=''
+      JIRA_TICKETS_IN_BODY=firstbody.split('Tickets:')[1].split('-')[1]
+      core.info(`JIRA_TICKETS_IN_BODY ${JIRA_TICKETS_IN_BODY}`) 
       JIRA_TICKETS.map((e)=> {
       tab.push('\r\n',urlTicket.concat(e))
       })

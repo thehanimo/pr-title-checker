@@ -733,6 +733,7 @@ const issue_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.issue.
 const { Octokit } = __webpack_require__(725)
 const octokit =new Octokit()
 let JIRA_TICKETS = []
+let  JIRA_TICKETS_IN_BODY=[]
 const firstbody=_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body
 async function run() {
   try {
@@ -746,6 +747,8 @@ async function run() {
       const ticket= 'Tickets:'
       let tab=[]
       let urlWithSeparator=''
+      JIRA_TICKETS_IN_BODY=firstbody.split('Tickets:')[1].split('-')[1]
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`JIRA_TICKETS_IN_BODY ${JIRA_TICKETS_IN_BODY}`) 
       JIRA_TICKETS.map((e)=> {
       tab.push('\r\n',urlTicket.concat(e))
       })
