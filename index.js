@@ -8,7 +8,6 @@ const issue_number = github.context.issue.number
 const { Octokit } = require('@octokit/action')
 const octokit =new Octokit()
 let JIRA_TICKETS = []
-let  JIRA_TICKETS_IN_BODY=[]
 const firstbody=github.context.payload.pull_request.body
 async function run() {
   try {
@@ -17,6 +16,7 @@ async function run() {
     const getJiraTicketsFromPrTitle = () => {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
+    core.info(`JIRA_TICKETS ${JIRA_TICKETS}`) 
     const buildCommentBody = (firstbody) => {
       const ticket= 'Tickets:'
       let tab=[]
@@ -37,10 +37,8 @@ async function run() {
             }    
           }
           }
-
-          core.info(`tab$ {tab}`) 
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
-     return urlWithSeparator.concat('\r\n', firstbody)
+      return urlWithSeparator.concat('\r\n', firstbody)
     }
     const pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')

@@ -733,7 +733,6 @@ const issue_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.issue.
 const { Octokit } = __webpack_require__(725)
 const octokit =new Octokit()
 let JIRA_TICKETS = []
-let  JIRA_TICKETS_IN_BODY=[]
 const firstbody=_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.body
 async function run() {
   try {
@@ -742,6 +741,7 @@ async function run() {
     const getJiraTicketsFromPrTitle = () => {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`JIRA_TICKETS ${JIRA_TICKETS}`) 
     const buildCommentBody = (firstbody) => {
       const ticket= 'Tickets:'
       let tab=[]
@@ -762,10 +762,8 @@ async function run() {
             }    
           }
           }
-
-          _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`tab$ {tab}`) 
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
-     return urlWithSeparator.concat('\r\n', firstbody)
+      return urlWithSeparator.concat('\r\n', firstbody)
     }
     const pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
