@@ -23,10 +23,12 @@ async function run() {
       let tab=[]
       let urlWithSeparator=''
       JIRA_TICKETS.map((e)=> {
-      tab.push('\r\n',urlTicket.concat(e))
+        const newUrl = urlTicket.concat(e)
+        tab.push('\r\n', newUrl)
       })
 
-      if (firstbody == undefined || firstbody === urlTicket){
+      core.info(`url ticket jira ${urlTicket}`)
+      if (firstbody == undefined || firstbody.localeCompare(urlTicket)){
         firstbody = ''
       }
       else {
