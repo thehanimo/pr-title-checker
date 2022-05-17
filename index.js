@@ -26,7 +26,6 @@ async function run() {
       })
 
       if (firstbody==undefined){
-        core.info(`test firstbody == undefined ${firstbody}`) 
         firstbody=''
       }
       else {
@@ -42,11 +41,11 @@ async function run() {
     }
     const pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
+    const bd = buildCommentBody(firstbody)
+    await createOrUpdateComment(bd)
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
       core.setOutput('JIRA_TICKETS', JIRA_TICKETS)
-      const bd = buildCommentBody(firstbody)
-      await createOrUpdateComment(bd)
     } else {
       await addLabel('NotLinkedToJira')
       core.setOutput('JIRA_TICKETS', [])

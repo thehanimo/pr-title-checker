@@ -751,7 +751,6 @@ async function run() {
       })
 
       if (firstbody==undefined){
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`test firstbody == undefined ${firstbody}`) 
         firstbody=''
       }
       else {
@@ -767,11 +766,11 @@ async function run() {
     }
     const pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
+    const bd = buildCommentBody(firstbody)
+    await createOrUpdateComment(bd)
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', JIRA_TICKETS)
-      const bd = buildCommentBody(firstbody)
-      await createOrUpdateComment(bd)
     } else {
       await addLabel('NotLinkedToJira')
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', [])
