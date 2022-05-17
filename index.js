@@ -42,12 +42,14 @@ async function run() {
     const pattern = /\d{4,5}/
     const titleContainsJiraNumbers = pattern.test(title, 'i')
     const bd = buildCommentBody(firstbody)
-    await createOrUpdateComment(bd)
+  
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
+      await createOrUpdateComment(bd)
       core.setOutput('JIRA_TICKETS', JIRA_TICKETS)
     } else {
       await addLabel('NotLinkedToJira')
+      await createOrUpdateComment(bd)
       core.setOutput('JIRA_TICKETS', [])
     }
   } catch (error) {
