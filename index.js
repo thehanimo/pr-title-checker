@@ -42,7 +42,7 @@ async function run() {
   
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
-      if(labels.localeCompare('NotLinkedToJira')==0){
+      if(labels.includes('NotLinkedToJira')){
           await removeLabel('NotLinkedToJira')
       }
     
