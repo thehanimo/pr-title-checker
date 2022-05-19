@@ -79,13 +79,13 @@ async function addLabel(name) {
     labels: [name],
   })
 }
-async function getLabel (name){
-  let getLabelResponse = await octokit.rest.issues.getLabel({
+const getLabel =()=>{  octokit.rest.issues.getLabel({
     owner,
     repo,
     name,
   });
 }
+
 async function removeLabel(name){
   let removeLabelResponse= await octokit.rest.issues.removeLabel({
     owner,
