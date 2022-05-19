@@ -767,6 +767,7 @@ async function run() {
   
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(labels)
       if(labels.toString().includes('NotLinkedToJira')){
           await removeLabel('NotLinkedToJira')
       }
