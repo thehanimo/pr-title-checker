@@ -42,6 +42,7 @@ async function run() {
   
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
+      await removeLabel('NotLinkedToJira')
       const bd = buildCommentBody(firstbody)
       await createOrUpdateComment(bd)
       core.setOutput('JIRA_TICKETS', JIRA_TICKETS)
@@ -72,6 +73,14 @@ async function addLabel(name) {
     issue_number,
     labels: [name],
   })
+}
+async function removeLabel(name){
+  let removeLabelResponse= await octokit.rest.issues.removeLabel({
+    owner,
+    repo,
+    issue_number,
+    name,
+  });
 }
 if (octokit) {
   run()
