@@ -42,7 +42,6 @@ async function run() {
   
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
-      core.info(getLabel('NotLinkedToJira'))
       if(getLabel('NotLinkedToJira')){
           await removeLabel('NotLinkedToJira')
       }
