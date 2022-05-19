@@ -767,7 +767,10 @@ async function run() {
   
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
-      await removeLabel('NotLinkedToJira')
+      if(labels.localeCompare('NotLinkedToJira')==0){
+          await removeLabel('NotLinkedToJira')
+      }
+    
       const bd = buildCommentBody(firstbody)
       await createOrUpdateComment(bd)
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', JIRA_TICKETS)
