@@ -764,11 +764,10 @@ async function run() {
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
       return urlWithSeparator.concat('\r\n', firstbody)
     }
-    const checkLabel =getLabel('NotLinkedToJira')
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
-      if(checkLabel){
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`in get label= ${checkLabel}`)
+      if(getLabelResponse){
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`in get label= ${getLabelResponse}`)
           await removeLabel('NotLinkedToJira')
         
       }
@@ -804,8 +803,8 @@ async function addLabel(name) {
     labels: [name],
   })
 }
-async function getLabel (name){
-  let getLabelResponse = await octokit.rest.issues.getLabel({
+const getLabelResponse =async(name)=>{
+  await octokit.rest.issues.getLabel({
     owner,
     repo,
     name,
