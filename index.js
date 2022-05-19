@@ -42,7 +42,7 @@ async function run() {
   
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
-      if(labels.includes('NotLinkedToJira')){
+      if(labels.toString().includes('NotLinkedToJira')){
           await removeLabel('NotLinkedToJira')
       }
     
