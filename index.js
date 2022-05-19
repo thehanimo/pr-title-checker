@@ -39,9 +39,10 @@ async function run() {
       urlWithSeparator=ticket.concat('\r\n',...tab).concat('\r\n', separator)
       return urlWithSeparator.concat('\r\n', firstbody)
     }
-    const checkLabel =await getLabel('NotLinkedToJira')
+    
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
+      const checkLabel =await getLabel('NotLinkedToJira')
       if(checkLabel){
         core.info(`in get label= ${checkLabel}`)
           await removeLabel('NotLinkedToJira')
