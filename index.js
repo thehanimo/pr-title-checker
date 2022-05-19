@@ -42,8 +42,8 @@ async function run() {
   
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
-      core.info(labels)
-      if(labels.toString().includes('NotLinkedToJira')){
+      core.info(getLabel('NotLinkedToJira'))
+      if(getLabel('NotLinkedToJira')){
           await removeLabel('NotLinkedToJira')
       }
     
@@ -77,6 +77,13 @@ async function addLabel(name) {
     issue_number,
     labels: [name],
   })
+}
+async function getLabel (name){
+  let getLabelResponse = await octokit.rest.issues.getLabel({
+    owner,
+    repo,
+    name,
+  });
 }
 async function removeLabel(name){
   let removeLabelResponse= await octokit.rest.issues.removeLabel({
