@@ -23,7 +23,7 @@ async function run() {
       let tab=[]
       let urlWithSeparator=''
       JIRA_TICKETS.map((e)=> {
-      tab.push('\r\n',urlTicket.concat(e))
+      tab.push('\r\n',urlTicket.concat(e).fontsize(7))
       })
 
       if (firstbody==undefined){
