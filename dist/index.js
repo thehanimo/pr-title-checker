@@ -743,7 +743,6 @@ async function run() {
     const getJiraTicketsFromPrTitle = () => {
       JIRA_TICKETS = title.split('-')[0].split('|')
     }
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(JIRA_TICKETS)
     const buildCommentBody = (firstbody) => {
       const ticket= 'Tickets:'
       let tab=[]
@@ -773,8 +772,9 @@ async function run() {
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', JIRA_TICKETS)
     } else {
       await addLabel('NotLinkedToJira')
-      const EmptyBody = firstbody.split(separator)[1]
-      await createOrUpdateComment(EmptyBody)
+      const splittedBody = firstbody.split(separator)
+      const userdPrBody = splittedBody.length === 1 ? splittedBody[0] : splittedBody[1]
+      await createOrUpdateComment(userdPrBody)
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', [])
     }
   } catch (error) {
