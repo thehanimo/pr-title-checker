@@ -773,7 +773,9 @@ async function run() {
     } else {
       await addLabel('NotLinkedToJira')
       const splittedBody = firstbody.split(separator)
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(splittedBody)
       const userdPrBody = splittedBody.length === 1 ? splittedBody[0] : splittedBody[1]
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(userdPrBody)
       await createOrUpdateComment(userdPrBody)
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('JIRA_TICKETS', [])
     }

@@ -48,7 +48,9 @@ async function run() {
     } else {
       await addLabel('NotLinkedToJira')
       const splittedBody = firstbody.split(separator)
+      core.info(splittedBody)
       const userdPrBody = splittedBody.length === 1 ? splittedBody[0] : splittedBody[1]
+      core.info(userdPrBody)
       await createOrUpdateComment(userdPrBody)
       core.setOutput('JIRA_TICKETS', [])
     }
