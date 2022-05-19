@@ -766,7 +766,7 @@ async function run() {
     }
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
-      if(getLabelResponse){
+      if(getLabelResponse('NotLinkedToJira')){
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`in get label= ${getLabelResponse}`)
           await removeLabel('NotLinkedToJira')
         
