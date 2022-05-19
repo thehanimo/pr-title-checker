@@ -79,7 +79,7 @@ async function addLabel(name) {
     labels: [name],
   })
 }
-const getLabel =()=>{  octokit.rest.issues.getLabel({
+const getLabel =(name)=>{  octokit.rest.issues.getLabel({
     owner,
     repo,
     name,
