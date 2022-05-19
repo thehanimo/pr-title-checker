@@ -48,8 +48,9 @@ async function run() {
       core.setOutput('JIRA_TICKETS', JIRA_TICKETS)
     } else {
       await addLabel('NotLinkedToJira')
-      const EmptyBody = firstbody.split(separator)[1]
-      await createOrUpdateComment(EmptyBody)
+      const splittedBody = firstbody.split(separator)
+      const userdPrBody = splittedBody.length === 1 ? splittedBody[0] : splittedBody[1]
+      await createOrUpdateComment(userdPrBody)
       core.setOutput('JIRA_TICKETS', [])
     }
   } catch (error) {
