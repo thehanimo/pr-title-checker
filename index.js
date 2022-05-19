@@ -43,7 +43,9 @@ async function run() {
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
       if(getLabel('NotLinkedToJira')){
+        core.info(`in get label ${getLabel('NotLinkedToJira')}`)
           await removeLabel('NotLinkedToJira')
+        
       }
     
       const bd = buildCommentBody(firstbody)

@@ -768,7 +768,9 @@ async function run() {
     if (titleContainsJiraNumbers) {
       getJiraTicketsFromPrTitle()
       if(getLabel('NotLinkedToJira')){
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`in get label ${getLabel('NotLinkedToJira')}`)
           await removeLabel('NotLinkedToJira')
+        
       }
     
       const bd = buildCommentBody(firstbody)
