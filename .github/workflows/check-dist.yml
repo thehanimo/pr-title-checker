@@ -21,21 +21,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Set Node.js 12.x
-        uses: actions/setup-node@v2.4.1
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3
         with:
-          node-version: 12.x
-      
-      - name: Install Yarn
-        run: npm install -g yarn
+          node-version: 16
 
       - name: Install dependencies
-        run: yarn
+        run: npm i
 
       - name: Rebuild the dist/ directory
-        run: yarn run prepare
+        run: npm run prepare
 
       - name: Compare the expected and actual dist/ directories
         run: |
