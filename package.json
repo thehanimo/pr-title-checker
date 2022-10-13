@@ -27,6 +27,6 @@
     "@octokit/action": "^3.0.5"
   },
   "devDependencies": {
-    "@zeit/ncc": "^0.22.3"
+    "@vercel/ncc": "^0.34.0"
   }
 }
