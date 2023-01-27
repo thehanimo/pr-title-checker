@@ -17,11 +17,12 @@ async function run() {
     let config;
     try {
       config = await getJSON(configPath);
+      config = JSON.parse(config);
     } catch (e) {
-      core.setFailed(`Couldn't retrieve the config file specified - ${e}`);
+      core.setFailed(`Couldn't retrieve or parse the config file specified - ${e}`);
       return;
     }
-    let { CHECKS, LABEL, MESSAGES } = JSON.parse(config);
+    let { CHECKS, LABEL, MESSAGES } = config;
     LABEL = LABEL || {};
     LABEL.name = LABEL.name || "";
     LABEL.color = LABEL.color || "eee";

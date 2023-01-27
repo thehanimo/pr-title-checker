@@ -30,10 +30,12 @@ Create a config file `.github/pr-title-checker-config.json` like this one below:
 ```
 You can pass in one of `prefixes` or `regexp` or even both based on your use case. `regexpFlags` and `ignoreLables` are optional fields.
 
+If `LABEL.name` is set to `""`, adding or removing labels will be skipped. The CI test will continue to pass/fail accordingly.
+
 If none of the checks pass, a label will be added to that pull request. \
 If at least one of them passes, the label will be removed.
 
-This action causes CI tests to fail by default. However, if you don't want CI tests failing just because of this action, simply set `alwaysPassCI` as true in the CHECKS field.
+This action causes CI tests to fail by default. However, if you do not want CI tests failing just because of this action, simply set `alwaysPassCI` as true in the CHECKS field. **An invalid config file will always cause the action to fail.**
 
 Also, adding label names to the optional `ignoreLabels` field will forfeit any checks for PRs with those labels.
 
@@ -56,7 +58,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: thehanimo/pr-title-checker@v1.3.5
+      - uses: thehanimo/pr-title-checker@v1.3.6
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
