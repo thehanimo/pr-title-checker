@@ -62899,7 +62899,8 @@ async function run() {
       return;
     }
     let { CHECKS, LABEL, MESSAGES } = JSON.parse(config);
-    LABEL.name = LABEL.name || "title needs formatting";
+    LABEL = LABEL || {};
+    LABEL.name = LABEL.name || "";
     LABEL.color = LABEL.color || "eee";
     CHECKS.ignoreLabels = CHECKS.ignoreLabels || [];
     MESSAGES = MESSAGES || {};
@@ -62917,19 +62918,8 @@ async function run() {
       }
     }
 
-    try {
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Creating label (${LABEL.name})...`);
-      let createResponse = await octokit.issues.createLabel({
-        owner,
-        repo,
-        name: LABEL.name,
-        color: LABEL.color,
-      });
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Created label (${LABEL.name}) - ${createResponse.status}`);
-    } catch (error) {
-      // Might not always be due to label's existence
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Label (${LABEL.name}) already created.`);
-    }
+    await createLabel(LABEL.name, LABEL.color);
+
     if (CHECKS.prefixes && CHECKS.prefixes.length) {
       for (let i = 0; i < CHECKS.prefixes.length; i++) {
         if (title.startsWith(CHECKS.prefixes[i])) {
@@ -62978,7 +62968,31 @@ async function titleCheckFailed(CHECKS, LABEL, MESSAGES) {
   }
 }
 
+async function createLabel(name, color) {
+  if (name === '') {
+    return;
+  }
+
+  try {
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Creating label (${name})...`);
+    let createResponse = await octokit.issues.createLabel({
+      owner,
+      repo,
+      name: name,
+      color: color,
+    });
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Created label (${name}) - ${createResponse.status}`);
+  } catch (error) {
+    // Might not always be due to label's existence
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Label (${name}) already created.`);
+  }
+}
+
 async function addLabel(name) {
+  if (name === '') {
+    return;
+  }
+
   _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Adding label (${name}) to PR...`);
   let addLabelResponse = await octokit.issues.addLabels({
     owner,
@@ -62990,6 +63004,10 @@ async function addLabel(name) {
 }
 
 async function removeLabel(labels, name) {
+  if (name === '') {
+    return;
+  }
+
   try {
     if (
       !labels
