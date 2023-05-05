@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "es6",
+        "moduleResolution": "node",
+        "lib": [
+            "ESNext",
+            "dom"
+        ],
+        "skipLibCheck": true,
+        "outDir": "dist",
+        "removeComments": true,
+        "baseUrl": "./",
+        "esModuleInterop": true,
+        "paths": {},
+        "sourceMap": false,
+        "alwaysStrict": true,
+        "allowUnreachableCode": false,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "noImplicitReturns": true,
+        "noUncheckedIndexedAccess": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true
+    },
+    "include": [
+        "./index.ts",
+    ],
+    "exclude": [
+        "node_modules",
+        "./node_modules",
+        "./node_modules/*",
+    ]
+}
