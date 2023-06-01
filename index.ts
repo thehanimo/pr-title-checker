@@ -1,7 +1,8 @@
-import * as github from '@actions/github';
-import * as core from '@actions/core';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import * as github from "@actions/github";
+import * as core from "@actions/core";
+import { readFileSync } from "fs";
+import { join } from "path";
+import https from "node:https";
 
 const context = github.context;
 let octokit: ReturnType<typeof github.getOctokit>;
@@ -22,11 +23,14 @@ type ConfigType = {
     success: string;
     failure: string;
     notice: string;
-  }
+  };
 };
 
-
-async function titleCheckFailed({ config: { MESSAGES, LABEL, CHECKS } }: { config: ConfigType }) {
+async function titleCheckFailed({
+  config: { MESSAGES, LABEL, CHECKS },
+}: {
+  config: ConfigType;
+}) {
   try {
     if (MESSAGES.notice.length) {
       core.notice(MESSAGES.notice);
@@ -49,8 +53,12 @@ async function titleCheckFailed({ config: { MESSAGES, LABEL, CHECKS } }: { confi
   }
 }
 
-async function createLabel({ label: { name, color } }: { label: ConfigType['LABEL'] }) {
-  if (name === '') {
+async function createLabel({
+  label: { name, color },
+}: {
+  label: ConfigType["LABEL"];
+}) {
+  if (name === "") {
     return;
   }
 
@@ -70,7 +78,7 @@ async function createLabel({ label: { name, color } }: { label: ConfigType['LABE
 }
 
 async function addLabel({ name }: { name: string }) {
-  if (name === '') {
+  if (name === "") {
     return;
   }
 
@@ -85,8 +93,14 @@ async function addLabel({ name }: { name: string }) {
   core.info(`Added label (${name}) to PR - ${addLabelResponse.status}`);
 }
 
-async function removeLabel({ labels, name }: { name: string; labels: ConfigType['LABEL'][] }) {
-  if (name === '') {
+async function removeLabel({
+  labels,
+  name,
+}: {
+  name: string;
+  labels: ConfigType["LABEL"][];
+}) {
+  if (name === "") {
     return;
   }
 
@@ -112,23 +126,94 @@ async function removeLabel({ labels, name }: { name: string; labels: ConfigType[
   }
 }
 
-async function getJSON({ path, useLocalConfigFile }: { path: string; useLocalConfigFile: boolean; }) {
-  if (useLocalConfigFile) {
-    const data = readFileSync(join(process.cwd(), path));
-    return data.toString();
-  }
+function downloadJSON(url: URL): Promise<ConfigType> {
+  return new Promise<ConfigType>((resolve, reject) => {
+    const req = https.request(url, (res) => {
+      let responseBody = "";
 
-  const response = await octokit.rest.repos.getContent({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    path,
-    ref: context.sha,
+      res.on("data", (d) => {
+        responseBody += d;
+      });
+      res.on("end", () => {
+        resolve(JSON.parse(responseBody.toString()));
+      });
+    });
+    req.on("error", (e) => {
+      reject(e);
+    });
+    req.end();
   });
-
-  return Buffer.from((response.data as any).content, (response.data as any).encoding).toString();
 }
 
-async function handleOctokitError({ passOnOctokitError, error }: { passOnOctokitError: boolean, error: Error }) {
+async function getJSON({
+  configPath,
+  localConfigPath,
+  remoteConfigURL,
+  GitHubConfigOwner,
+  GitHubConfigRepo,
+  GitHubConfigPath,
+  GitHubConfigRef,
+  GitHubConfigToken,
+}: {
+  configPath: string;
+  localConfigPath?: string;
+  remoteConfigURL?: string;
+  GitHubConfigOwner?: string;
+  GitHubConfigRepo?: string;
+  GitHubConfigPath?: string;
+  GitHubConfigRef?: string;
+  GitHubConfigToken?: string;
+}): Promise<ConfigType> {
+  if (localConfigPath) {
+    core.info(`Using local config file ${localConfigPath}`);
+    const data = readFileSync(join(process.cwd(), localConfigPath));
+    return JSON.parse(data.toString());
+  }
+  if (remoteConfigURL) {
+    core.info(`Using remote config file ${remoteConfigURL}`);
+    const url = new URL(remoteConfigURL);
+    return await downloadJSON(url);
+  }
+
+  const is_same_repo =
+    GitHubConfigOwner === context.repo.owner &&
+    GitHubConfigRepo === context.repo.repo;
+
+  core.info(
+    `Using config file ${GitHubConfigPath || configPath} from repo ${
+      GitHubConfigOwner || context.repo.owner
+    }/${GitHubConfigRepo || context.repo.repo} [ref: ${
+      GitHubConfigRef ||
+      (is_same_repo ? context.sha : "latest commit on the default branch")
+    }]`
+  );
+  let _octokit = octokit;
+  if (GitHubConfigToken) {
+    _octokit = github.getOctokit(GitHubConfigToken);
+  }
+
+  const response = await _octokit.rest.repos.getContent({
+    owner: GitHubConfigOwner || context.repo.owner,
+    repo: GitHubConfigRepo || context.repo.repo,
+    path: GitHubConfigPath || configPath,
+    ref: GitHubConfigRef || (is_same_repo ? context.sha : undefined),
+  });
+
+  return JSON.parse(
+    Buffer.from(
+      (response.data as any).content,
+      (response.data as any).encoding
+    ).toString()
+  );
+}
+
+async function handleOctokitError({
+  passOnOctokitError,
+  error,
+}: {
+  passOnOctokitError: boolean;
+  error: Error;
+}) {
   core.info(`Octokit Error - ${error}`);
   if (passOnOctokitError) {
     core.info("Passing CI regardless");
@@ -139,10 +224,22 @@ async function handleOctokitError({ passOnOctokitError, error }: { passOnOctokit
 
 const run = async ({
   configPath,
-  useLocalConfigFile
+  localConfigPath,
+  remoteConfigURL,
+  GitHubConfigOwner,
+  GitHubConfigRepo,
+  GitHubConfigPath,
+  GitHubConfigRef,
+  GitHubConfigToken,
 }: {
   configPath: string;
-  useLocalConfigFile: boolean;
+  localConfigPath: string;
+  remoteConfigURL?: string;
+  GitHubConfigOwner?: string;
+  GitHubConfigRepo?: string;
+  GitHubConfigPath?: string;
+  GitHubConfigRef?: string;
+  GitHubConfigToken?: string;
 }) => {
   if (!context || !context.payload || !context.payload.pull_request) {
     return;
@@ -154,19 +251,29 @@ const run = async ({
 
     let config: ConfigType;
     try {
-      const configString = await getJSON({ path: configPath, useLocalConfigFile });
-      config = JSON.parse(configString);
+      config = await getJSON({
+        configPath,
+        localConfigPath,
+        remoteConfigURL,
+        GitHubConfigOwner,
+        GitHubConfigRepo,
+        GitHubConfigPath,
+        GitHubConfigRef,
+        GitHubConfigToken,
+      });
     } catch (e) {
-      core.setFailed(`1 Couldn't retrieve or parse the config file specified - ${e}`);
+      core.setFailed(
+        `Couldn't retrieve or parse the config file specified - ${e}`
+      );
       return;
     }
 
     let { CHECKS, LABEL, MESSAGES } = config;
-    LABEL = LABEL || {} as ConfigType['LABEL'];
+    LABEL = LABEL || ({} as ConfigType["LABEL"]);
     LABEL.name = LABEL.name || "";
     LABEL.color = LABEL.color || "eee";
     CHECKS.ignoreLabels = CHECKS.ignoreLabels || [];
-    MESSAGES = MESSAGES || {} as ConfigType['MESSAGES'];
+    MESSAGES = MESSAGES || ({} as ConfigType["MESSAGES"]);
     MESSAGES.success = MESSAGES.success || "All OK";
     MESSAGES.failure = MESSAGES.failure || "Failing CI test";
     MESSAGES.notice = MESSAGES.notice || "";
@@ -206,17 +313,31 @@ const run = async ({
   } catch (error) {
     core.info(error);
   }
-}
+};
 
 const configPath = core.getInput("configuration_path")!;
-const useLocalConfigFile = core.getInput("use_local_configuration_file") === "true";
+const localConfigPath = core.getInput("local_configuration_path");
+const remoteConfigURL = core.getInput("remote_configuration_url");
+const GitHubConfigOwner = core.getInput("github_configuration_owner");
+const GitHubConfigRepo = core.getInput("github_configuration_repo");
+const GitHubConfigPath = core.getInput("github_configuration_path");
+const GitHubConfigRef = core.getInput("github_configuration_ref");
+const GitHubConfigToken = core.getInput("github_configuration_token");
 const passOnOctokitError = core.getInput("pass_on_octokit_error") === "true";
-const token = core.getInput('GITHUB_TOKEN');
+const token = core.getInput("GITHUB_TOKEN");
 
 try {
-  octokit = github.getOctokit(token)
+  octokit = github.getOctokit(token);
+  run({
+    configPath,
+    localConfigPath,
+    remoteConfigURL,
+    GitHubConfigOwner,
+    GitHubConfigRepo,
+    GitHubConfigPath,
+    GitHubConfigRef,
+    GitHubConfigToken,
+  });
 } catch (e) {
   handleOctokitError({ passOnOctokitError, error: e });
 }
-
-run({ configPath, useLocalConfigFile })

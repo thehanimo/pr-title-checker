@@ -9839,15 +9839,21 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
+// ESM COMPAT FLAG
 __nccwpck_require__.r(__webpack_exports__);
-/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(5438);
-/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(2186);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(7147);
-/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(fs__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(1017);
-/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__nccwpck_require__.n(path__WEBPACK_IMPORTED_MODULE_3__);
+
+// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
+var github = __nccwpck_require__(5438);
+// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
+var core = __nccwpck_require__(2186);
+// EXTERNAL MODULE: external "fs"
+var external_fs_ = __nccwpck_require__(7147);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __nccwpck_require__(1017);
+;// CONCATENATED MODULE: external "node:https"
+const external_node_https_namespaceObject = require("node:https");
+var external_node_https_default = /*#__PURE__*/__nccwpck_require__.n(external_node_https_namespaceObject);
+;// CONCATENATED MODULE: ./dist/index.js
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -9861,71 +9867,72 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
-const context = _actions_github__WEBPACK_IMPORTED_MODULE_0__.context;
+
+const context = github.context;
 let octokit;
-function titleCheckFailed({ config: { MESSAGES, LABEL, CHECKS } }) {
+function titleCheckFailed({ config: { MESSAGES, LABEL, CHECKS }, }) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             if (MESSAGES.notice.length) {
-                _actions_core__WEBPACK_IMPORTED_MODULE_1__.notice(MESSAGES.notice);
+                core.notice(MESSAGES.notice);
             }
             yield addLabel({ name: LABEL.name });
             if (CHECKS.alwaysPassCI) {
-                _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(MESSAGES.failure);
+                core.info(MESSAGES.failure);
             }
             else {
-                _actions_core__WEBPACK_IMPORTED_MODULE_1__.setFailed(MESSAGES.failure);
+                core.setFailed(MESSAGES.failure);
             }
         }
         catch (error) {
-            _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(error);
+            core.info(error);
             if (CHECKS.alwaysPassCI) {
-                _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Failed to add label (${LABEL.name}) to PR`);
+                core.info(`Failed to add label (${LABEL.name}) to PR`);
             }
             else {
-                _actions_core__WEBPACK_IMPORTED_MODULE_1__.setFailed(`Failed to add label (${LABEL.name}) to PR`);
+                core.setFailed(`Failed to add label (${LABEL.name}) to PR`);
             }
         }
     });
 }
-function createLabel({ label: { name, color } }) {
+function createLabel({ label: { name, color }, }) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (name === '') {
+        if (name === "") {
             return;
         }
         try {
-            _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Creating label (${name})...`);
+            core.info(`Creating label (${name})...`);
             let createResponse = yield octokit.rest.issues.createLabel({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 name: name,
                 color: color,
             });
-            _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Created label (${name}) - ${createResponse.status}`);
+            core.info(`Created label (${name}) - ${createResponse.status}`);
         }
         catch (error) {
-            _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Label (${name}) already created.`);
+            core.info(`Label (${name}) already created.`);
         }
     });
 }
 function addLabel({ name }) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (name === '') {
+        if (name === "") {
             return;
         }
-        _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Adding label (${name}) to PR...`);
+        core.info(`Adding label (${name}) to PR...`);
         const addLabelResponse = yield octokit.rest.issues.addLabels({
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: context.issue.number,
             labels: [name],
         });
-        _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Added label (${name}) to PR - ${addLabelResponse.status}`);
+        core.info(`Added label (${name}) to PR - ${addLabelResponse.status}`);
     });
 }
-function removeLabel({ labels, name }) {
+function removeLabel({ labels, name, }) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (name === '') {
+        if (name === "") {
             return;
         }
         try {
@@ -9934,47 +9941,78 @@ function removeLabel({ labels, name }) {
                 .includes(name.toLowerCase())) {
                 return;
             }
-            _actions_core__WEBPACK_IMPORTED_MODULE_1__.info("No formatting necessary. Removing label...");
+            core.info("No formatting necessary. Removing label...");
             let removeLabelResponse = yield octokit.rest.issues.removeLabel({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
                 name: name,
             });
-            _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Removed label - ${removeLabelResponse.status}`);
+            core.info(`Removed label - ${removeLabelResponse.status}`);
         }
         catch (error) {
-            _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Failed to remove label (${name}) from PR: ${error}`);
+            core.info(`Failed to remove label (${name}) from PR: ${error}`);
         }
     });
 }
-function getJSON({ path, useLocalConfigFile }) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (useLocalConfigFile) {
-            const data = (0,fs__WEBPACK_IMPORTED_MODULE_2__.readFileSync)((0,path__WEBPACK_IMPORTED_MODULE_3__.join)(process.cwd(), path));
-            return data.toString();
-        }
-        const response = yield octokit.rest.repos.getContent({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            path,
-            ref: context.sha,
+function downloadJSON(url) {
+    return new Promise((resolve, reject) => {
+        const req = external_node_https_default().request(url, (res) => {
+            let responseBody = "";
+            res.on("data", (d) => {
+                responseBody += d;
+            });
+            res.on("end", () => {
+                resolve(JSON.parse(responseBody.toString()));
+            });
         });
-        return Buffer.from(response.data.content, response.data.encoding).toString();
+        req.on("error", (e) => {
+            reject(e);
+        });
+        req.end();
     });
 }
-function handleOctokitError({ passOnOctokitError, error }) {
+function getJSON({ configPath, localConfigPath, remoteConfigURL, GitHubConfigOwner, GitHubConfigRepo, GitHubConfigPath, GitHubConfigRef, GitHubConfigToken, }) {
     return __awaiter(this, void 0, void 0, function* () {
-        _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Octokit Error - ${error}`);
+        if (localConfigPath) {
+            core.info(`Using local config file ${localConfigPath}`);
+            const data = (0,external_fs_.readFileSync)((0,external_path_.join)(process.cwd(), localConfigPath));
+            return JSON.parse(data.toString());
+        }
+        if (remoteConfigURL) {
+            core.info(`Using remote config file ${remoteConfigURL}`);
+            const url = new URL(remoteConfigURL);
+            return yield downloadJSON(url);
+        }
+        const is_same_repo = GitHubConfigOwner === context.repo.owner &&
+            GitHubConfigRepo === context.repo.repo;
+        core.info(`Using config file ${GitHubConfigPath || configPath} from repo ${GitHubConfigOwner || context.repo.owner}/${GitHubConfigRepo || context.repo.repo} [ref: ${GitHubConfigRef ||
+            (is_same_repo ? context.sha : "latest commit on the default branch")}]`);
+        let _octokit = octokit;
+        if (GitHubConfigToken) {
+            _octokit = github.getOctokit(GitHubConfigToken);
+        }
+        const response = yield _octokit.rest.repos.getContent({
+            owner: GitHubConfigOwner || context.repo.owner,
+            repo: GitHubConfigRepo || context.repo.repo,
+            path: GitHubConfigPath || configPath,
+            ref: GitHubConfigRef || (is_same_repo ? context.sha : undefined),
+        });
+        return JSON.parse(Buffer.from(response.data.content, response.data.encoding).toString());
+    });
+}
+function handleOctokitError({ passOnOctokitError, error, }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        core.info(`Octokit Error - ${error}`);
         if (passOnOctokitError) {
-            _actions_core__WEBPACK_IMPORTED_MODULE_1__.info("Passing CI regardless");
+            core.info("Passing CI regardless");
         }
         else {
-            _actions_core__WEBPACK_IMPORTED_MODULE_1__.setFailed("Failing CI test");
+            core.setFailed("Failing CI test");
         }
     });
 }
-const run = ({ configPath, useLocalConfigFile }) => __awaiter(void 0, void 0, void 0, function* () {
+const run = ({ configPath, localConfigPath, remoteConfigURL, GitHubConfigOwner, GitHubConfigRepo, GitHubConfigPath, GitHubConfigRef, GitHubConfigToken, }) => __awaiter(void 0, void 0, void 0, function* () {
     if (!context || !context.payload || !context.payload.pull_request) {
         return;
     }
@@ -9983,11 +10021,19 @@ const run = ({ configPath, useLocalConfigFile }) => __awaiter(void 0, void 0, vo
         const labels = context.payload.pull_request.labels;
         let config;
         try {
-            const configString = yield getJSON({ path: configPath, useLocalConfigFile });
-            config = JSON.parse(configString);
+            config = yield getJSON({
+                configPath,
+                localConfigPath,
+                remoteConfigURL,
+                GitHubConfigOwner,
+                GitHubConfigRepo,
+                GitHubConfigPath,
+                GitHubConfigRef,
+                GitHubConfigToken,
+            });
         }
         catch (e) {
-            _actions_core__WEBPACK_IMPORTED_MODULE_1__.setFailed(`1 Couldn't retrieve or parse the config file specified - ${e}`);
+            core.setFailed(`Couldn't retrieve or parse the config file specified - ${e}`);
             return;
         }
         let { CHECKS, LABEL, MESSAGES } = config;
@@ -10002,7 +10048,7 @@ const run = ({ configPath, useLocalConfigFile }) => __awaiter(void 0, void 0, vo
         for (let i = 0; i < labels.length; i++) {
             for (let j = 0; j < CHECKS.ignoreLabels.length; j++) {
                 if (labels[i].name == CHECKS.ignoreLabels[j]) {
-                    _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Ignoring Title Check for label - ${labels[i].name}`);
+                    core.info(`Ignoring Title Check for label - ${labels[i].name}`);
                     removeLabel({ labels, name: LABEL.name });
                     return;
                 }
@@ -10013,7 +10059,7 @@ const run = ({ configPath, useLocalConfigFile }) => __awaiter(void 0, void 0, vo
             for (let i = 0; i < CHECKS.prefixes.length; i++) {
                 if (title.startsWith(CHECKS.prefixes[i])) {
                     removeLabel({ labels, name: LABEL.name });
-                    _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(MESSAGES.success);
+                    core.info(MESSAGES.success);
                     return;
                 }
             }
@@ -10022,27 +10068,42 @@ const run = ({ configPath, useLocalConfigFile }) => __awaiter(void 0, void 0, vo
             let re = new RegExp(CHECKS.regexp, CHECKS.regexpFlags || "");
             if (re.test(title)) {
                 removeLabel({ labels, name: LABEL.name });
-                _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(MESSAGES.success);
+                core.info(MESSAGES.success);
                 return;
             }
         }
         yield titleCheckFailed({ config });
     }
     catch (error) {
-        _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(error);
+        core.info(error);
     }
 });
-const configPath = _actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput("configuration_path");
-const useLocalConfigFile = _actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput("use_local_configuration_file") === "true";
-const passOnOctokitError = _actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput("pass_on_octokit_error") === "true";
-const token = _actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput('GITHUB_TOKEN');
+const configPath = core.getInput("configuration_path");
+const localConfigPath = core.getInput("local_configuration_path");
+const remoteConfigURL = core.getInput("remote_configuration_url");
+const GitHubConfigOwner = core.getInput("github_configuration_owner");
+const GitHubConfigRepo = core.getInput("github_configuration_repo");
+const GitHubConfigPath = core.getInput("github_configuration_path");
+const GitHubConfigRef = core.getInput("github_configuration_ref");
+const GitHubConfigToken = core.getInput("github_configuration_token");
+const passOnOctokitError = core.getInput("pass_on_octokit_error") === "true";
+const token = core.getInput("GITHUB_TOKEN");
 try {
-    octokit = _actions_github__WEBPACK_IMPORTED_MODULE_0__.getOctokit(token);
+    octokit = github.getOctokit(token);
+    run({
+        configPath,
+        localConfigPath,
+        remoteConfigURL,
+        GitHubConfigOwner,
+        GitHubConfigRepo,
+        GitHubConfigPath,
+        GitHubConfigRef,
+        GitHubConfigToken,
+    });
 }
 catch (e) {
     handleOctokitError({ passOnOctokitError, error: e });
 }
-run({ configPath, useLocalConfigFile });
 
 })();
 
