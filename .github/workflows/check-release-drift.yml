@@ -3,7 +3,7 @@
 # `index.js` is the code that will run.
 # For our project, we generate this file through a build process from other source files.
 # We need to make sure the checked-in `index.js` actually matches what we expect it to be.
-name: Check dist/
+name: Check release drift
 
 on:
   push:
@@ -17,23 +17,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  check-dist:
+  check-release-drift:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Set Node.js 16.x
+      - name: Set Node.js 16
         uses: actions/setup-node@v3
         with:
           node-version: 16
-
       - name: Install dependencies
         run: npm i
-
       - name: Rebuild the dist/ directory
         run: npm run prepare
-
       - name: Compare the expected and actual dist/ directories
         run: |
           if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
@@ -42,8 +38,7 @@ jobs:
             exit 1
           fi
         id: diff
-
-      # If index.js was different than expected, upload the expected version as an artifact
+      # If index.js was different than expected, upload the unexpected version as an artifact
       - uses: actions/upload-artifact@v2
         if: ${{ failure() && steps.diff.conclusion == 'failure' }}
         with:

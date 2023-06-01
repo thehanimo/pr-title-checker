@@ -3,16 +3,21 @@ description: "Checks if the PR Title follows contribution guidelines."
 branding:
   icon: "tag"
   color: "purple"
-on: [pull_request]
+
 inputs:
   GITHUB_TOKEN:
+    description: "Override GitHub Token"
     required: false
+  use_local_configuration_file:
+    description: "use a local configuration file rather than pulling one from the repo"
+    default: "false"
   pass_on_octokit_error:
     description: "force CI to pass if an octokit error (e.g. missing GITHUB_TOKEN) occurs"
-    default: false
+    default: "false"
   configuration_path:
     description: "config file path"
     default: ".github/pr-title-checker-config.json"
+
 runs:
   using: "node16"
   main: "dist/index.js"
