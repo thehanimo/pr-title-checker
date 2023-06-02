@@ -39,6 +39,8 @@ This action causes CI tests to fail by default. However, if you do not want CI t
 
 Adding label names to the optional `ignoreLabels` field will forfeit any checks for PRs with those labels.
 
+The config file is always pulled from the action's context, i.e., the branch from which the pull request is made.
+
 See [other ways to specify config file.](#other-ways-to-specify-config-file)
 
 ## Create Workflow
@@ -95,12 +97,12 @@ Note that this has to be a url pointing to a valid, raw json file. See [#28](htt
           github_configuration_owner: RocketChat #(optional. defaults to the owner of the repo in which the action is run)
           github_configuration_repo: Rocket.Chat #(optional. defaults to the repo in which the action is run)
           github_configuration_path: .github/pr-title-checker-config.json #(optional. defaults to .github/pr-title-checker-config.json)
-          github_configuration_sha: <commit-sha> #(optional. defaults to the latest commit sha)
+          github_configuration_ref: <named branch, tag, or SHA> #(optional. defaults to the latest commit on the default branch or, if the repo specified is the same as the one on which the action is running, it defaults to the current context's sha)
           github_configuration_token: ${{ secrets.YOUR_TOKEN }} #(optional. defaults to GITHUB_TOKEN)
 ...
 ```
 
-### 2. Config file in the local file system of the action
+### 3. Config file in the local file system of the action
 ```yaml
 ...
     steps:
