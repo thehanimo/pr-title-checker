@@ -37,11 +37,13 @@ If at least one of them passes, the label will be removed.
 
 This action causes CI tests to fail by default. However, if you do not want CI tests failing just because of this action, simply set `alwaysPassCI` as true in the CHECKS field. **An invalid config file will always cause the action to fail.**
 
-Also, adding label names to the optional `ignoreLabels` field will forfeit any checks for PRs with those labels.
+Adding label names to the optional `ignoreLabels` field will forfeit any checks for PRs with those labels.
+
+See [other ways to specify config file.](#other-ways-to-specify-config-file)
 
 ## Create Workflow
 
-Create a workflow (eg: `.github/workflows/pr-title-checker.yml` see [Creating a Workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file)) to utilize the pr-title-checker action with content:
+Create a workflow file (eg: `.github/workflows/pr-title-checker.yml`) with the following content:
 
 ```yaml
 name: "PR Title Checker"
@@ -58,14 +60,60 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: thehanimo/pr-title-checker@v1.3.7
+      - uses: thehanimo/pr-title-checker@v1.4.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
-          configuration_path: ".github/pr-title-checker-config.json"
+          configuration_path: .github/pr-title-checker-config.json #(optional. defaults to .github/pr-title-checker-config.json)
 ```
-NOTE:
-* [`pull_request_target`](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#pull_request_target) event trigger should be used (not [`pull_request`](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#pull_request)) in order to support checking PRs from forks. This was added in `v1.3.2`. See [#8](https://github.com/thehanimo/pr-title-checker/issues/8).
-* `pass_on_octokit_error` is an optional input which defaults to false. Setting it to true will prevent the CI from failing when an octokit error occurs. This is useful when the environment this action is run in is not consistent. For e.g, it could be a missing GITHUB_TOKEN. Thanks to [@bennycode](https://github.com/bennycode) for pointing this out.
 
-* `configuration_path` is also an optional input which defaults to `".github/pr-title-checker-config.json"`. If you wish to store your config file elsewhere, pass in the path here.
+To learn more about workflows, see [Create an example workflow.](https://docs.github.com/en/actions/using-workflows/about-workflows#create-an-example-workflow)
+
+## Other ways to specify config file
+
+### 1. Remote URL to a valid JSON file
+```yaml
+...
+    steps:
+      - uses: thehanimo/pr-title-checker@v1.4.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pass_on_octokit_error: false
+          remote_configuration_path: "https://raw.githubusercontent.com/grpc/grpc/master/.github/pr_title_checker_config.json"
+...
+```
+Note that this has to be a url pointing to a valid, raw json file. See [#28](https://github.com/thehanimo/pr-title-checker/issues/28)
+
+### 2. Config file in a GitHub repo
+```yaml
+...
+    steps:
+      - uses: thehanimo/pr-title-checker@v1.4.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pass_on_octokit_error: false
+          github_configuration_owner: RocketChat #(optional. defaults to the owner of the repo in which the action is run)
+          github_configuration_repo: Rocket.Chat #(optional. defaults to the repo in which the action is run)
+          github_configuration_path: .github/pr-title-checker-config.json #(optional. defaults to .github/pr-title-checker-config.json)
+          github_configuration_sha: <commit-sha> #(optional. defaults to the latest commit sha)
+          github_configuration_token: ${{ secrets.YOUR_TOKEN }} #(optional. defaults to GITHUB_TOKEN)
+...
+```
+
+### 2. Config file in the local file system of the action
+```yaml
+...
+    steps:
+      - uses: thehanimo/pr-title-checker@v1.4.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pass_on_octokit_error: false
+          local_configuration_path: .github/actions/enforce-pr-titles/config.json
+...
+```
+This is useful if a repo containing the config file is pulled in a previous step using, for e.g., actions/checkout. See [#36](https://github.com/thehanimo/pr-title-checker/issues/36)
+
+
+## NOTE:
+* [`pull_request_target`](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#pull_request_target) event trigger should be used (not [`pull_request`](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#pull_request)) in order to support checking PRs from forks. This was added in `v1.3.2`. See [#8.](https://github.com/thehanimo/pr-title-checker/issues/8)
+* `pass_on_octokit_error` is an optional input which defaults to false. Setting it to true will prevent the CI from failing when an octokit error occurs. This is useful when the environment this action is run in is not consistent. For e.g, it could be a missing GITHUB_TOKEN. Thanks to [@bennycode](https://github.com/bennycode) for pointing this out.
