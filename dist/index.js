@@ -9984,8 +9984,8 @@ function getJSON({ configPath, localConfigPath, remoteConfigURL, GitHubConfigOwn
             const url = new URL(remoteConfigURL);
             return yield downloadJSON(url);
         }
-        const is_same_repo = GitHubConfigOwner === context.repo.owner &&
-            GitHubConfigRepo === context.repo.repo;
+        const is_same_repo = (!GitHubConfigOwner || GitHubConfigOwner === context.repo.owner) &&
+            (!GitHubConfigRepo || GitHubConfigRepo === context.repo.repo);
         core.info(`Using config file ${GitHubConfigPath || configPath} from repo ${GitHubConfigOwner || context.repo.owner}/${GitHubConfigRepo || context.repo.repo} [ref: ${GitHubConfigRef ||
             (is_same_repo ? context.sha : "latest commit on the default branch")}]`);
         let _octokit = octokit;

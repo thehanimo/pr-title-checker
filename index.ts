@@ -176,8 +176,8 @@ async function getJSON({
   }
 
   const is_same_repo =
-    GitHubConfigOwner === context.repo.owner &&
-    GitHubConfigRepo === context.repo.repo;
+    (!GitHubConfigOwner || GitHubConfigOwner === context.repo.owner) &&
+    (!GitHubConfigRepo || GitHubConfigRepo === context.repo.repo);
 
   core.info(
     `Using config file ${GitHubConfigPath || configPath} from repo ${
