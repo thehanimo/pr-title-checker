@@ -1,18 +1,39 @@
-name: "PR Title Checker"
-description: "Checks if the PR Title follows contribution guidelines."
+name: PR Title Checker
+description: Checks if the PR Title follows contribution guidelines
 branding:
-  icon: "tag"
-  color: "purple"
-on: [pull_request]
+  icon: tag
+  color: purple
 inputs:
   GITHUB_TOKEN:
+    description: Override GitHub Token
     required: false
   pass_on_octokit_error:
-    description: "force CI to pass if an octokit error (e.g. missing GITHUB_TOKEN) occurs"
+    description: force CI to pass if an octokit error (e.g. missing GITHUB_TOKEN) occurs
     default: false
   configuration_path:
-    description: "config file path"
-    default: ".github/pr-title-checker-config.json"
+    description: config file path
+    default: .github/pr-title-checker-config.json
+  local_configuration_path:
+    description: use a local configuration file present in file system of the instance running the action
+    required: false
+  remote_configuration_url:
+    description: pull local configuration file from the internet using the url provided
+    required: false
+  github_configuration_owner:
+    description: the owner of the repo in which the config file is present. defaults to the owner of the repo in which the action is run
+    required: false
+  github_configuration_repo:
+    description: the repo in which the config file is present. defaults to the repo in which the action is run
+    required: false
+  github_configuration_path:
+    description: the path to the config file in the github repo. defaults to .github/pr-title-checker-config.json
+    required: false
+  github_configuration_ref:
+    description: the named branch, tag, or SHA from which the config file is pulled. defaults to the latest commit on the default branch
+    required: false
+  github_configuration_token:
+    description: the github access token to be used to access the config file using other github_configuration_* parameters. can differ from GITHUB_TOKEN. defaults to GITHUB_TOKEN
+    required: false
 runs:
-  using: "node16"
-  main: "dist/index.js"
+  using: node16
+  main: dist/index.js
