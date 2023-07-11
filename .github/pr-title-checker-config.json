@@ -1,0 +1,15 @@
+{
+  "LABEL": {
+    "name": "Wrong Title Format",
+    "color": "D93F0B"
+  },
+  "CHECKS": {
+    "regexp": "^(chore|docs|enh|feat(-story)?|fix|hotfix|revert){1}(\\([A-Z]+-[0-9]+\\))?(!)?: [a-z]([\\s\\S]*)$",
+    "alwaysPassCI": "false"
+  },
+  "MESSAGES": {
+    "success": "Result of PR title checking per Easyship Commit Format as following link: https://easyship-team.atlassian.net/l/cp/MLTKy3Br) has passed",
+    "failure": "In order to be considered for merging, the pull request title must match the specification in Easyship Commit Format as in following link: https://easyship-team.atlassian.net/l/cp/MLTKy3Br",
+    "notice": ""
+  }
+}
