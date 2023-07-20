@@ -10049,7 +10049,6 @@ const run = ({ configPath, localConfigPath, remoteConfigURL, GitHubConfigOwner, 
             for (let j = 0; j < CHECKS.ignoreLabels.length; j++) {
                 if (labels[i].name == CHECKS.ignoreLabels[j]) {
                     core.info(`Ignoring Title Check for label - ${labels[i].name}`);
-                    removeLabel({ labels, name: LABEL.name });
                     return;
                 }
             }
