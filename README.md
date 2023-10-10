@@ -81,7 +81,7 @@ To learn more about workflows, see [Create an example workflow.](https://docs.gi
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
-          remote_configuration_path: "https://raw.githubusercontent.com/grpc/grpc/master/.github/pr_title_checker_config.json"
+          remote_configuration_url: "https://raw.githubusercontent.com/grpc/grpc/master/.github/pr_title_checker_config.json"
 ...
 ```
 Note that this has to be a url pointing to a valid, raw json file. See [#28](https://github.com/thehanimo/pr-title-checker/issues/28)
