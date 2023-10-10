@@ -309,7 +309,7 @@ const run = async ({
       }
     }
 
-    await titleCheckFailed({ config });
+    await titleCheckFailed({ config: { LABEL, CHECKS, MESSAGES } });
   } catch (error) {
     core.info(error);
   }
