@@ -10072,7 +10072,7 @@ const run = ({ configPath, localConfigPath, remoteConfigURL, GitHubConfigOwner, 
                 return;
             }
         }
-        yield titleCheckFailed({ config });
+        yield titleCheckFailed({ config: { LABEL, CHECKS, MESSAGES } });
     }
     catch (error) {
         core.info(error);
