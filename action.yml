@@ -35,5 +35,5 @@ inputs:
     description: the github access token to be used to access the config file using other github_configuration_* parameters. can differ from GITHUB_TOKEN. defaults to GITHUB_TOKEN
     required: false
 runs:
-  using: node16
+  using: node20
   main: dist/index.js
