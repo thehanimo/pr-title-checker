@@ -34,6 +34,9 @@ inputs:
   github_configuration_token:
     description: the github access token to be used to access the config file using other github_configuration_* parameters. can differ from GITHUB_TOKEN. defaults to GITHUB_TOKEN
     required: false
+outputs:
+  success:
+    description: true if the PR title is valid, false otherwise. Undefined if an error occurred.
 runs:
   using: node20
   main: dist/index.js
