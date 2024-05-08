@@ -43,6 +43,8 @@ The config file is always pulled from the action's context, i.e., the branch fro
 
 See [other ways to specify config file.](#other-ways-to-specify-config-file)
 
+Action returns a single output: `success` that indicates if check has passed or failed.
+
 ## Create Workflow
 
 Create a workflow file (eg: `.github/workflows/pr-title-checker.yml`) with the following content:
@@ -115,6 +117,44 @@ Note that this has to be a url pointing to a valid, raw json file. See [#28](htt
 ```
 This is useful if a repo containing the config file is pulled in a previous step using, for e.g., actions/checkout. See [#36](https://github.com/thehanimo/pr-title-checker/issues/36)
 
+### Using output result
+
+You can use the action output to execute follow up steps e.g. adding a comment.
+
+```yml
+    steps:
+      - uses: thehanimo/pr-title-checker@v1.4.1
+        id: check
+        continue-on-error: true
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pass_on_octokit_error: false
+      
+      - name: Add comment to fix PR title
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ steps.check.outputs.success == 'false'}}
+        with:
+          header: 'PR Title Check'
+          recreate: true
+          message: |
+              ### 🚨 PR Title Needs Formatting 🚨
+              The title of this PR needs to be formatted correctly and include an Azure Boards Reference. 
+              Please update the title to match the format `type: description AB#xxx`. Examples:
+              * `bugfix: fix typo in README.md AB#123`
+              * `chore: update dependencies AB#456`
+              * `feat: add new feature AB#789`
+              * `chore: fixing build pipeline` - no AB reference
+
+      - name: Add comment that PR title is fixed
+        if: ${{ steps.check.outputs.success == 'true'}}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: 'PR Title Check'
+          recreate: true
+          message: |
+              ### ✅ PR Title Fixed ✅
+              The title of this PR has been updated to match the correct format. Thank you!
+```
 
 ## NOTE:
 * [`pull_request_target`](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#pull_request_target) event trigger should be used (not [`pull_request`](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#pull_request)) in order to support checking PRs from forks. This was added in `v1.3.2`. See [#8.](https://github.com/thehanimo/pr-title-checker/issues/8)
