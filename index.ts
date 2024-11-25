@@ -283,6 +283,7 @@ const run = async ({
         if (labels[i].name == CHECKS.ignoreLabels[j]) {
           core.info(`Ignoring Title Check for label - ${labels[i].name}`);
           removeLabel({ labels, name: LABEL.name });
+          core.setOutput("success", true);
           return;
         }
       }
@@ -295,6 +296,7 @@ const run = async ({
         if (title.startsWith(CHECKS.prefixes[i])) {
           removeLabel({ labels, name: LABEL.name });
           core.info(MESSAGES.success);
+          core.setOutput("success", true);
           return;
         }
       }
@@ -305,11 +307,13 @@ const run = async ({
       if (re.test(title)) {
         removeLabel({ labels, name: LABEL.name });
         core.info(MESSAGES.success);
+        core.setOutput("success", true);
         return;
       }
     }
 
     await titleCheckFailed({ config: { LABEL, CHECKS, MESSAGES } });
+    core.setOutput("success", false);
   } catch (error) {
     core.info(error);
   }
