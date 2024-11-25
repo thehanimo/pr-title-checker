@@ -64,7 +64,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: thehanimo/pr-title-checker@v1.4.1
+      - uses: thehanimo/pr-title-checker@v1.4.3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
@@ -79,7 +79,7 @@ To learn more about workflows, see [Create an example workflow.](https://docs.gi
 ```yaml
 ...
     steps:
-      - uses: thehanimo/pr-title-checker@v1.4.1
+      - uses: thehanimo/pr-title-checker@v1.4.3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
@@ -92,7 +92,7 @@ Note that this has to be a url pointing to a valid, raw json file. See [#28](htt
 ```yaml
 ...
     steps:
-      - uses: thehanimo/pr-title-checker@v1.4.1
+      - uses: thehanimo/pr-title-checker@v1.4.3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
@@ -108,7 +108,7 @@ Note that this has to be a url pointing to a valid, raw json file. See [#28](htt
 ```yaml
 ...
     steps:
-      - uses: thehanimo/pr-title-checker@v1.4.1
+      - uses: thehanimo/pr-title-checker@v1.4.3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
@@ -123,7 +123,7 @@ You can use the action output to execute follow up steps e.g. adding a comment.
 
 ```yml
     steps:
-      - uses: thehanimo/pr-title-checker@v1.4.1
+      - uses: thehanimo/pr-title-checker@v1.4.3
         id: check
         continue-on-error: true
         with:
