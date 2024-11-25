@@ -137,7 +137,7 @@ You can use the action output to execute follow up steps e.g. adding a comment.
           header: 'PR Title Check'
           recreate: true
           message: |
-              ### 🚨 PR Title Needs Formatting 🚨
+              ### 🚨 PR Title Needs Formatting
               The title of this PR needs to be formatted correctly and include an Azure Boards Reference. 
               Please update the title to match the format `type: description AB#xxx`. Examples:
               * `bugfix: fix typo in README.md AB#123`
@@ -152,7 +152,7 @@ You can use the action output to execute follow up steps e.g. adding a comment.
           header: 'PR Title Check'
           recreate: true
           message: |
-              ### ✅ PR Title Fixed ✅
+              ### ✅ PR Title Formatted Correctly
               The title of this PR has been updated to match the correct format. Thank you!
 ```
 
