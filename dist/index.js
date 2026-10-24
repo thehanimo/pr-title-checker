@@ -37173,7 +37173,16 @@ const run = (_a) => dist_awaiter(void 0, [_a], void 0, function* ({ configPath, 
                 return;
             }
         }
-        info(`Title "${title}" did not match any of the prefixes ${JSON.stringify(CHECKS.prefixes || [])}${CHECKS.regexp ? ` or the regexp /${CHECKS.regexp}/${CHECKS.regexpFlags || ""}` : ""}`);
+        const prefixes = [...(CHECKS.prefixes || [])].sort();
+        const expected = [
+            prefixes.length &&
+                `any of the prefixes ${prefixes.map((p) => `"${p}"`).join(", ")}`,
+            CHECKS.regexp &&
+                `the regexp /${CHECKS.regexp}/${CHECKS.regexpFlags || ""}`,
+        ].filter(Boolean);
+        info(expected.length
+            ? `Title "${title}" did not match ${expected.join(" or ")}`
+            : "No prefixes or regexp configured in CHECKS");
         yield titleCheckFailed({ config: { LABEL, CHECKS, MESSAGES } });
         setOutput("success", false);
     }

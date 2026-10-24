@@ -323,10 +323,17 @@ const run = async ({
       }
     }
 
+    const prefixes = [...(CHECKS.prefixes || [])].sort();
+    const expected = [
+      prefixes.length &&
+        `any of the prefixes ${prefixes.map((p) => `"${p}"`).join(", ")}`,
+      CHECKS.regexp &&
+        `the regexp /${CHECKS.regexp}/${CHECKS.regexpFlags || ""}`,
+    ].filter(Boolean);
     core.info(
-      `Title "${title}" did not match any of the prefixes ${JSON.stringify(
-        CHECKS.prefixes || []
-      )}${CHECKS.regexp ? ` or the regexp /${CHECKS.regexp}/${CHECKS.regexpFlags || ""}` : ""}`
+      expected.length
+        ? `Title "${title}" did not match ${expected.join(" or ")}`
+        : "No prefixes or regexp configured in CHECKS"
     );
     await titleCheckFailed({ config: { LABEL, CHECKS, MESSAGES } });
     core.setOutput("success", false);
