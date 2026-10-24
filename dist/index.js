@@ -36989,6 +36989,17 @@ function createLabel(_a) {
         }
         catch (error) {
             info(`Label (${name}) already created.`);
+            try {
+                yield octokit.rest.issues.updateLabel({
+                    owner: dist_context.repo.owner,
+                    repo: dist_context.repo.repo,
+                    name: name,
+                    color: color,
+                });
+            }
+            catch (error) {
+                info(`Failed to update label (${name}) color: ${error}`);
+            }
         }
     });
 }
@@ -37008,16 +37019,11 @@ function addLabel(_a) {
     });
 }
 function removeLabel(_a) {
-    return dist_awaiter(this, arguments, void 0, function* ({ labels, name, }) {
+    return dist_awaiter(this, arguments, void 0, function* ({ name }) {
         if (name === "") {
             return;
         }
         try {
-            if (!labels
-                .map((label) => label.name.toLowerCase())
-                .includes(name.toLowerCase())) {
-                return;
-            }
             info("No formatting necessary. Removing label...");
             let removeLabelResponse = yield octokit.rest.issues.removeLabel({
                 owner: dist_context.repo.owner,
@@ -37028,19 +37034,34 @@ function removeLabel(_a) {
             info(`Removed label - ${removeLabelResponse.status}`);
         }
         catch (error) {
-            info(`Failed to remove label (${name}) from PR: ${error}`);
+            if (error.status === 404) {
+                info(`Label (${name}) not present on PR.`);
+            }
+            else {
+                info(`Failed to remove label (${name}) from PR: ${error}`);
+            }
         }
     });
 }
 function downloadJSON(url) {
     return new Promise((resolve, reject) => {
         const req = external_node_https_default().request(url, (res) => {
+            if (res.statusCode !== 200) {
+                res.resume();
+                reject(new Error(`HTTP ${res.statusCode} fetching ${url}`));
+                return;
+            }
             let responseBody = "";
             res.on("data", (d) => {
                 responseBody += d;
             });
             res.on("end", () => {
-                resolve(JSON.parse(responseBody.toString()));
+                try {
+                    resolve(JSON.parse(responseBody.toString()));
+                }
+                catch (e) {
+                    reject(e);
+                }
             });
         });
         req.on("error", (e) => {
@@ -37053,7 +37074,7 @@ function getJSON(_a) {
     return dist_awaiter(this, arguments, void 0, function* ({ configPath, localConfigPath, remoteConfigURL, GitHubConfigOwner, GitHubConfigRepo, GitHubConfigPath, GitHubConfigRef, GitHubConfigToken, }) {
         if (localConfigPath) {
             info(`Using local config file ${localConfigPath}`);
-            const data = (0,external_fs_namespaceObject.readFileSync)((0,external_path_namespaceObject.join)(process.cwd(), localConfigPath));
+            const data = (0,external_fs_namespaceObject.readFileSync)((0,external_path_namespaceObject.resolve)(process.cwd(), localConfigPath));
             return JSON.parse(data.toString());
         }
         if (remoteConfigURL) {
@@ -37126,7 +37147,7 @@ const run = (_a) => dist_awaiter(void 0, [_a], void 0, function* ({ configPath, 
             for (let j = 0; j < CHECKS.ignoreLabels.length; j++) {
                 if (labels[i].name == CHECKS.ignoreLabels[j]) {
                     info(`Ignoring Title Check for label - ${labels[i].name}`);
-                    removeLabel({ labels, name: LABEL.name });
+                    yield removeLabel({ name: LABEL.name });
                     setOutput("success", true);
                     return;
                 }
@@ -37136,7 +37157,7 @@ const run = (_a) => dist_awaiter(void 0, [_a], void 0, function* ({ configPath, 
         if (CHECKS.prefixes && CHECKS.prefixes.length) {
             for (let i = 0; i < CHECKS.prefixes.length; i++) {
                 if (title.startsWith(CHECKS.prefixes[i])) {
-                    removeLabel({ labels, name: LABEL.name });
+                    yield removeLabel({ name: LABEL.name });
                     info(MESSAGES.success);
                     setOutput("success", true);
                     return;
@@ -37146,17 +37167,18 @@ const run = (_a) => dist_awaiter(void 0, [_a], void 0, function* ({ configPath, 
         if (CHECKS.regexp) {
             let re = new RegExp(CHECKS.regexp, CHECKS.regexpFlags || "");
             if (re.test(title)) {
-                removeLabel({ labels, name: LABEL.name });
+                yield removeLabel({ name: LABEL.name });
                 info(MESSAGES.success);
                 setOutput("success", true);
                 return;
             }
         }
+        info(`Title "${title}" did not match any of the prefixes ${JSON.stringify(CHECKS.prefixes || [])}${CHECKS.regexp ? ` or the regexp /${CHECKS.regexp}/${CHECKS.regexpFlags || ""}` : ""}`);
         yield titleCheckFailed({ config: { LABEL, CHECKS, MESSAGES } });
         setOutput("success", false);
     }
     catch (error) {
-        info(error);
+        setFailed(`${error}`);
     }
 });
 const configPath = getInput("configuration_path");

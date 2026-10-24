@@ -1,7 +1,7 @@
 import * as github from "@actions/github";
 import * as core from "@actions/core";
 import { readFileSync } from "fs";
-import { join } from "path";
+import { resolve as resolvePath } from "path";
 import https from "node:https";
 
 const context = github.context;
@@ -74,6 +74,16 @@ async function createLabel({
   } catch (error) {
     // Might not always be due to label's existence
     core.info(`Label (${name}) already created.`);
+    try {
+      await octokit.rest.issues.updateLabel({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        name: name,
+        color: color,
+      });
+    } catch (error) {
+      core.info(`Failed to update label (${name}) color: ${error}`);
+    }
   }
 }
 
@@ -93,26 +103,14 @@ async function addLabel({ name }: { name: string }) {
   core.info(`Added label (${name}) to PR - ${addLabelResponse.status}`);
 }
 
-async function removeLabel({
-  labels,
-  name,
-}: {
-  name: string;
-  labels: ConfigType["LABEL"][];
-}) {
+async function removeLabel({ name }: { name: string }) {
   if (name === "") {
     return;
   }
 
+  // The event payload's labels can be stale (e.g. a concurrent run added the
+  // label after this event fired), so always attempt removal.
   try {
-    if (
-      !labels
-        .map((label) => label.name.toLowerCase())
-        .includes(name.toLowerCase())
-    ) {
-      return;
-    }
-
     core.info("No formatting necessary. Removing label...");
     let removeLabelResponse = await octokit.rest.issues.removeLabel({
       owner: context.repo.owner,
@@ -122,20 +120,33 @@ async function removeLabel({
     });
     core.info(`Removed label - ${removeLabelResponse.status}`);
   } catch (error) {
-    core.info(`Failed to remove label (${name}) from PR: ${error}`);
+    if (error.status === 404) {
+      core.info(`Label (${name}) not present on PR.`);
+    } else {
+      core.info(`Failed to remove label (${name}) from PR: ${error}`);
+    }
   }
 }
 
 function downloadJSON(url: URL): Promise<ConfigType> {
   return new Promise<ConfigType>((resolve, reject) => {
     const req = https.request(url, (res) => {
+      if (res.statusCode !== 200) {
+        res.resume();
+        reject(new Error(`HTTP ${res.statusCode} fetching ${url}`));
+        return;
+      }
       let responseBody = "";
 
       res.on("data", (d) => {
         responseBody += d;
       });
       res.on("end", () => {
-        resolve(JSON.parse(responseBody.toString()));
+        try {
+          resolve(JSON.parse(responseBody.toString()));
+        } catch (e) {
+          reject(e);
+        }
       });
     });
     req.on("error", (e) => {
@@ -166,7 +177,7 @@ async function getJSON({
 }): Promise<ConfigType> {
   if (localConfigPath) {
     core.info(`Using local config file ${localConfigPath}`);
-    const data = readFileSync(join(process.cwd(), localConfigPath));
+    const data = readFileSync(resolvePath(process.cwd(), localConfigPath));
     return JSON.parse(data.toString());
   }
   if (remoteConfigURL) {
@@ -282,7 +293,7 @@ const run = async ({
       for (let j = 0; j < CHECKS.ignoreLabels.length; j++) {
         if (labels[i].name == CHECKS.ignoreLabels[j]) {
           core.info(`Ignoring Title Check for label - ${labels[i].name}`);
-          removeLabel({ labels, name: LABEL.name });
+          await removeLabel({ name: LABEL.name });
           core.setOutput("success", true);
           return;
         }
@@ -294,7 +305,7 @@ const run = async ({
     if (CHECKS.prefixes && CHECKS.prefixes.length) {
       for (let i = 0; i < CHECKS.prefixes.length; i++) {
         if (title.startsWith(CHECKS.prefixes[i])) {
-          removeLabel({ labels, name: LABEL.name });
+          await removeLabel({ name: LABEL.name });
           core.info(MESSAGES.success);
           core.setOutput("success", true);
           return;
@@ -305,17 +316,22 @@ const run = async ({
     if (CHECKS.regexp) {
       let re = new RegExp(CHECKS.regexp, CHECKS.regexpFlags || "");
       if (re.test(title)) {
-        removeLabel({ labels, name: LABEL.name });
+        await removeLabel({ name: LABEL.name });
         core.info(MESSAGES.success);
         core.setOutput("success", true);
         return;
       }
     }
 
+    core.info(
+      `Title "${title}" did not match any of the prefixes ${JSON.stringify(
+        CHECKS.prefixes || []
+      )}${CHECKS.regexp ? ` or the regexp /${CHECKS.regexp}/${CHECKS.regexpFlags || ""}` : ""}`
+    );
     await titleCheckFailed({ config: { LABEL, CHECKS, MESSAGES } });
     core.setOutput("success", false);
   } catch (error) {
-    core.info(error);
+    core.setFailed(`${error}`);
   }
 };
 
