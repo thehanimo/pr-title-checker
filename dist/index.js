@@ -37110,6 +37110,23 @@ function handleOctokitError(_a) {
         }
     });
 }
+function describeMismatch({ title, checks, }) {
+    const expected = [];
+    if (checks.prefixes && checks.prefixes.length) {
+        const prefixes = [...checks.prefixes]
+            .sort()
+            .map((prefix) => `"${prefix}"`)
+            .join(", ");
+        expected.push(`any of the prefixes ${prefixes}`);
+    }
+    if (checks.regexp) {
+        expected.push(`the regexp /${checks.regexp}/${checks.regexpFlags || ""}`);
+    }
+    if (!expected.length) {
+        return "No prefixes or regexp configured in CHECKS";
+    }
+    return `Title "${title}" did not match ${expected.join(" or ")}`;
+}
 const run = (_a) => dist_awaiter(void 0, [_a], void 0, function* ({ configPath, localConfigPath, remoteConfigURL, GitHubConfigOwner, GitHubConfigRepo, GitHubConfigPath, GitHubConfigRef, GitHubConfigToken, }) {
     if (!dist_context || !dist_context.payload || !dist_context.payload.pull_request) {
         return;
@@ -37173,16 +37190,7 @@ const run = (_a) => dist_awaiter(void 0, [_a], void 0, function* ({ configPath, 
                 return;
             }
         }
-        const prefixes = [...(CHECKS.prefixes || [])].sort();
-        const expected = [
-            prefixes.length &&
-                `any of the prefixes ${prefixes.map((p) => `"${p}"`).join(", ")}`,
-            CHECKS.regexp &&
-                `the regexp /${CHECKS.regexp}/${CHECKS.regexpFlags || ""}`,
-        ].filter(Boolean);
-        info(expected.length
-            ? `Title "${title}" did not match ${expected.join(" or ")}`
-            : "No prefixes or regexp configured in CHECKS");
+        info(describeMismatch({ title, checks: CHECKS }));
         yield titleCheckFailed({ config: { LABEL, CHECKS, MESSAGES } });
         setOutput("success", false);
     }

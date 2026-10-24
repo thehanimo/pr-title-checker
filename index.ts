@@ -233,6 +233,34 @@ async function handleOctokitError({
   }
 }
 
+function describeMismatch({
+  title,
+  checks,
+}: {
+  title: string;
+  checks: ConfigType["CHECKS"];
+}) {
+  const expected: string[] = [];
+
+  if (checks.prefixes && checks.prefixes.length) {
+    const prefixes = [...checks.prefixes]
+      .sort()
+      .map((prefix) => `"${prefix}"`)
+      .join(", ");
+    expected.push(`any of the prefixes ${prefixes}`);
+  }
+
+  if (checks.regexp) {
+    expected.push(`the regexp /${checks.regexp}/${checks.regexpFlags || ""}`);
+  }
+
+  if (!expected.length) {
+    return "No prefixes or regexp configured in CHECKS";
+  }
+
+  return `Title "${title}" did not match ${expected.join(" or ")}`;
+}
+
 const run = async ({
   configPath,
   localConfigPath,
@@ -323,18 +351,7 @@ const run = async ({
       }
     }
 
-    const prefixes = [...(CHECKS.prefixes || [])].sort();
-    const expected = [
-      prefixes.length &&
-        `any of the prefixes ${prefixes.map((p) => `"${p}"`).join(", ")}`,
-      CHECKS.regexp &&
-        `the regexp /${CHECKS.regexp}/${CHECKS.regexpFlags || ""}`,
-    ].filter(Boolean);
-    core.info(
-      expected.length
-        ? `Title "${title}" did not match ${expected.join(" or ")}`
-        : "No prefixes or regexp configured in CHECKS"
-    );
+    core.info(describeMismatch({ title, checks: CHECKS }));
     await titleCheckFailed({ config: { LABEL, CHECKS, MESSAGES } });
     core.setOutput("success", false);
   } catch (error) {
